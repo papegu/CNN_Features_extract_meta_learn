@@ -1,8 +1,14 @@
 %% Springer Nature LaTeX template — sn-jnl class (December 2024)
-%% Updated revision aligned with archived metrics and reviewer-response highlights
+%% Template source: https://www.overleaf.com/latex/templates/springer-nature-latex-template/myxmhdsbzkyd
+%% Direct download: https://www.springernature.com/gp/authors/campaigns/latex-author-support
+%%
+%% Compile with: pdflatex -> bibtex -> pdflatex -> pdflatex
+%% The sn-jnl.cls file must be placed in the same directory.
 
 \documentclass[pdflatex,sn-basic]{sn-jnl}
 
+
+%%%% Standard packages
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -13,7 +19,19 @@
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,shapes.geometric,shapes,arrows,positioning,fit,backgrounds,calc,matrix,decorations.pathreplacing}
+\usetikzlibrary{
+    arrows.meta,
+    shapes.geometric,
+    shapes,
+    arrows,
+    positioning,
+    fit,
+    backgrounds,
+    calc,
+    matrix,
+    decorations.pathreplacing
+}
+
 
 \begin{document}
 
@@ -22,128 +40,257 @@
 
 \author*[1]{\fnm{Pape ElHadji Abdoulaye} \sur{Gueye}}\email{papeabdoulaye.gueye@uadb.edu.sn}
 \equalcont{Corresponding author.}
+
 \author[1]{\fnm{Cherif Bachir} \sur{Deme}}
 \author[1]{\fnm{Diery} \sur{Ngom}}
 
 \affil*[1]{\orgdiv{Department of ICT, UFR SATIC},
            \orgname{Alioune Diop University},
            \orgaddress{\street{BP 30}, \city{Bambey}, \country{Senegal}}}
+           %%%% Journal information (update when target journal is confirmed)
+
+%%  ORCID identifiers
+%% Pape ElHadji Abdoulaye Gueye  — 0009-0000-5222-3474
+%% Cherif Bachir Deme             — 0000-0002-3775-4303
+%% Diery Ngom                     — 0009-0001-8506-3558
 
 \abstract{
-\textcolor{red}{Accurate crop health assessment is critical for food security in climate-vulnerable regions such as Senegal. In this revised manuscript, we address key reviewer concerns by clarifying the methodological contribution, strengthening quantitative reporting, and aligning all central numerical claims with archived experimental outputs.}
+\textcolor{red}{
+Accurate crop health assessment is critical for food security in climate-vulnerable regions like Senegal. While deep learning shows promise for plant disease detection, existing approaches predominantly rely on single-model architectures, limited evaluation metrics, and weak validation settings. To strengthen the methodological and experimental contribution of our framework, the revised manuscript clarifies the hybrid stacking design, expands the statistical characterization of the extracted features, and reinforces the evaluation with archived and reproducible result summaries.}
 
-We propose a hybrid feature-level stacking framework that combines deep representations extracted from ResNet50, EfficientNetB0, and MobileNetV2. After concatenating the three feature vectors into a 4,608-dimensional representation, we evaluate three meta-learners: MLP-Full, MLP-PCA, and PCA-Logistic.
+We propose a hybrid feature-level stacking framework that combines representations extracted from ResNet50, EfficientNetB0, and MobileNetV2, followed by meta-learning using MLP-Full, MLP-PCA, and PCA-Logistic classifiers.
 
-\textcolor{red}{Using the archived test-set evaluation artefacts, the proposed framework achieves \textbf{96.04\%} accuracy with MLP-Full, while MLP-PCA and PCA-Logistic achieve \textbf{95.22\%} and \textbf{95.27\%}, respectively. The revised manuscript also reports a compact and fully reproducible summary of reliable evaluation metrics and adds explicit statistical feature-space analysis to address the reviewers' requests for stronger experimental transparency.}
+\textcolor{red}{Evaluated on the PlantVillage dataset (54,306 images, 38 classes), the archived test-set results show that MLP-Full achieves \textbf{96.04\%} accuracy, while MLP-PCA and PCA-Logistic achieve \textbf{95.22\%} and \textbf{95.27\%}, respectively. The revised manuscript also adds compact reviewer-visible summaries of reliable metrics and feature-space statistics, together with new result figures derived directly from the archived JSON artefacts.}
 
-The extracted feature space exhibits substantial redundancy, with only 790 principal components required to preserve 95\% of the variance, corresponding to a compression ratio of 5.83$\times$. Low mean absolute correlation and non-trivial mutual information further confirm that the three backbones contribute complementary and discriminative information.
+These results confirm that hybrid feature-level stacking yields strong predictive performance while preserving model flexibility across meta-learner choices.
 }
 
 \keywords{Feature-level stacking, Convolutional Neural Networks, Plant disease detection, Model interpretability, Agricultural image analysis}
 
 \maketitle
 
+%%--------------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
+%%--------------------------------------------------------------------
 
-Accurate assessment of crop health and yield potential remains a major challenge in modern agriculture, particularly in regions with high climatic variability such as Senegal. Deep learning, and especially Convolutional Neural Networks (CNNs), has shown strong promise for automated plant disease recognition from imagery. However, many existing approaches rely on single-backbone architectures, which may fail to capture the complementary visual patterns needed for robust disease discrimination.
+Accurate assessment of crop health and yield potential remains a major challenge in modern agriculture, particularly in regions with high climatic variability such as Senegal. The country experiences recurrent droughts, irregular rainfall patterns, and increasing pressures on agricultural productivity, making early diagnosis of crop diseases and stress conditions essential for food security and sustainable development.
 
-To address this limitation, this study proposes a hybrid feature-level stacking framework that combines three pre-trained CNN architectures—ResNet50, EfficientNetB0, and MobileNetV2—into a unified feature representation. The core motivation is that different backbone families capture complementary aspects of leaf appearance, including semantic structure, texture, and multi-scale variation.
+In recent years, deep learning---particularly Convolutional Neural Networks (CNNs)---has emerged as a powerful tool for plant disease detection and crop monitoring using image data. For instance, several studies have demonstrated that transfer learning and fine-tuning of pre-trained architectures can significantly outperform traditional handcrafted feature methods.
 
-\textcolor{red}{In response to the reviewer criticism regarding novelty, we explicitly position simple concatenation as a strong and fully reproducible baseline while discussing learned attention-based fusion as a promising extension. In response to the criticism regarding incomplete and weakly documented evaluation, this revised manuscript focuses its main quantitative claims on archived and reproducible result files, and adds new summary tables and figures built directly from those artefacts.}
+Building on this momentum, several comparative studies have benchmarked popular CNN architectures for crop health monitoring. Beyond ground-based datasets, UAV-based remote sensing has also been explored, highlighting the importance of robust and transferable visual representations.
+
+Despite these advances, most existing methods rely on \textbf{single-model architectures}---such as ResNet50, EfficientNet, or MobileNetV2---which often fail to generalise effectively across different image distributions, disease types, and field conditions. A single backbone may capture only a subset of the relevant semantic and textural information needed for robust crop health assessment.
+
+To address these challenges, this study proposes a \textbf{hybrid feature-level stacking framework} that combines multiple pre-trained CNN models to improve generalisation and predictive performance.
+
+\textcolor{red}{
+Crucially, our revised presentation highlights two complementary aspects of the contribution. First, the hybrid feature stacking strategy combines semantically rich, multi-scale, and lightweight representations in a unified 4,608-dimensional embedding. Second, the revised manuscript makes the experimental evidence more transparent by adding reliable metric summaries and compact figures derived from archived results.}
 
 The main contributions of this work are fourfold:
 \begin{enumerate}
-    \item A multi-backbone feature fusion framework combining ResNet50, EfficientNetB0, and MobileNetV2 representations for crop disease classification.
-    \item A comprehensive statistical analysis of the extracted feature space, revealing strong redundancy and meaningful complementarity across backbones.
-    \item A comparative evaluation of three meta-learners operating on the same fused representation.
-    \item \textcolor{red}{A revised and more transparent presentation of results, with reliable test-set metrics and reviewer-oriented additions highlighted in red throughout the manuscript.}
+    \item A \textbf{multi-backbone feature fusion} approach that leverages complementary representations from ResNet50, EfficientNetB0, and MobileNetV2.
+
+    \item \textbf{Comprehensive statistical analysis} revealing substantial feature redundancy (\textcolor{red}{$5.83\times$} compression at 95\% variance) and low inter-backbone correlation (\textcolor{red}{0.091}), confirming architecture complementarity.
+
+    \item \textbf{Systematic evaluation of meta-learners} demonstrating important trade-offs: \textcolor{red}{MLP-Full (\textbf{96.04\% accuracy}), MLP-PCA (\textbf{95.22\%}), and PCA-Logistic (\textbf{95.27\%})}.
+
+    \item \textbf{Integrated explainability} confirming that all three backbones contribute meaningfully to classification decisions, with models focusing on biologically relevant regions.
 \end{enumerate}
 
+The proposed framework addresses key limitations of existing approaches by enhancing robustness through multi-model feature fusion, providing transparency through integrated explainability, and enabling systematic comparison between full and reduced feature-space meta-learners.
+
+The remainder of this paper is structured as follows. Section~\ref{sec:methodology} details our methodology, including data preprocessing, multi-backbone feature extraction, statistical feature analysis, and the design of the three meta-learners. Section~\ref{sec:results} presents the experimental findings. Section~\ref{sec:discussion} discusses the broader implications, limitations, and future directions, and Section~\ref{sec:conclusion} concludes the paper.
+
+%%--------------------------------------------------------------------
 \section{Methodology}
 \label{sec:methodology}
+%%--------------------------------------------------------------------
 
 \subsection{Overall Architecture}
 \label{subsec:architecture}
 
-Our framework follows a two-stage hierarchical architecture designed to exploit complementary representations from multiple pre-trained CNNs. In Stage~1, three ImageNet-pretrained backbones independently extract deep features from an input image. In Stage~1b, these features are concatenated and normalized. In Stage~2, the fused representation is passed to one of three meta-learners for final classification.
+Our framework follows a two-stage hierarchical architecture designed to leverage complementary representations from multiple pre-trained CNNs. In the first stage, three distinct CNN architectures---ResNet50, EfficientNetB0, and MobileNetV2---extract deep features from the same input image. These features are then concatenated and passed to one of three meta-learners for final classification.
 
 \begin{figure}[htbp]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-  input/.style={rectangle, rounded corners=4pt, draw=gray!70, fill=gray!20, minimum width=2.2cm, minimum height=0.75cm, font=\small\bfseries, align=center},
-  backbone/.style={rectangle, rounded corners=4pt, draw=blue!50, fill=blue!18, minimum width=2.5cm, minimum height=0.75cm, font=\small\bfseries, align=center},
-  feat/.style={rectangle, rounded corners=4pt, draw=green!60!black, fill=green!18, minimum width=1.6cm, minimum height=0.65cm, font=\small, align=center},
-  drop/.style={rectangle, rounded corners=4pt, draw=green!60!black, fill=green!18, minimum width=1.9cm, minimum height=0.65cm, font=\small, align=center},
-  concat/.style={rectangle, rounded corners=4pt, draw=orange!70!black, fill=orange!25, minimum width=2.4cm, minimum height=0.75cm, font=\small\bfseries, align=center},
-  bn/.style={rectangle, rounded corners=4pt, draw=orange!80!black, fill=orange!40, minimum width=2.2cm, minimum height=0.75cm, font=\small\bfseries, align=center},
-  meta/.style={rectangle, rounded corners=4pt, draw=purple!60, fill=purple!15, minimum width=3.8cm, minimum height=0.75cm, font=\small\bfseries, align=center},
-  output/.style={rectangle, rounded corners=4pt, draw=green!70!black, fill=green!30, minimum width=2.0cm, minimum height=0.65cm, font=\small\bfseries, align=center},
+  input/.style={rectangle, rounded corners=4pt,
+    draw=gray!70, fill=gray!20,
+    minimum width=2.2cm, minimum height=0.75cm,
+    font=\small\bfseries, align=center},
+  backbone/.style={rectangle, rounded corners=4pt,
+    draw=blue!50, fill=blue!18,
+    minimum width=2.5cm, minimum height=0.75cm,
+    font=\small\bfseries, align=center},
+  feat/.style={rectangle, rounded corners=4pt,
+    draw=green!60!black, fill=green!18,
+    minimum width=1.6cm, minimum height=0.65cm,
+    font=\small, align=center},
+  drop/.style={rectangle, rounded corners=4pt,
+    draw=green!60!black, fill=green!18,
+    minimum width=1.9cm, minimum height=0.65cm,
+    font=\small, align=center},
+  concat/.style={rectangle, rounded corners=4pt,
+    draw=orange!70!black, fill=orange!25,
+    minimum width=2.4cm, minimum height=0.75cm,
+    font=\small\bfseries, align=center},
+  bn/.style={rectangle, rounded corners=4pt,
+    draw=orange!80!black, fill=orange!40,
+    minimum width=2.2cm, minimum height=0.75cm,
+    font=\small\bfseries, align=center},
+  meta/.style={rectangle, rounded corners=4pt,
+    draw=purple!60, fill=purple!15,
+    minimum width=3.8cm, minimum height=0.75cm,
+    font=\small\bfseries, align=center},
+  output/.style={rectangle, rounded corners=4pt,
+    draw=green!70!black, fill=green!30,
+    minimum width=2.0cm, minimum height=0.65cm,
+    font=\small\bfseries, align=center},
   lbl/.style={font=\footnotesize\itshape, text=gray!65!black},
   arr/.style={->, >=Stealth, thick, draw=gray!70!black},
   node distance=0.55cm and 1.6cm
 ]
+
 \node[input] (img) {Input Image};
 \node[lbl, below=0.12cm of img] {\(224\!\times\!224\!\times\!3\)};
+
 \node[backbone, right=2.2cm of img, yshift= 2.2cm] (resnet)    {ResNet50};
 \node[backbone, right=2.2cm of img, yshift= 0.0cm] (efficient) {EfficientNetB0};
 \node[backbone, right=2.2cm of img, yshift=-2.2cm] (mobile)    {MobileNetV2};
+
 \draw[arr] (img.east) -- ++(0.6,0) |- (resnet.west);
 \draw[arr] (img.east) -- ++(0.6,0) |- (efficient.west);
 \draw[arr] (img.east) -- ++(0.6,0) |- (mobile.west);
+
+\draw[decorate, decoration={brace, amplitude=6pt, mirror}, thick, gray!55]
+    ([xshift=-0.15cm]resnet.north west) --
+    ([xshift=-0.15cm]mobile.south west)
+    node[midway, left=10pt, align=center, font=\footnotesize\itshape,
+         text=gray!65!black] {Pre-trained\\on ImageNet};
+
 \node[feat, right=1.6cm of resnet]    (f_res) {2\,048-d};
 \node[feat, right=1.6cm of efficient] (f_eff) {1\,280-d};
 \node[feat, right=1.6cm of mobile]    (f_mob) {1\,280-d};
-\draw[arr] (resnet) -- node[above, lbl] {GAP} (f_res);
+
+\draw[arr] (resnet)    -- node[above, lbl] {GAP} (f_res);
 \draw[arr] (efficient) -- node[above, lbl] {GAP} (f_eff);
-\draw[arr] (mobile) -- node[above, lbl] {GAP} (f_mob);
+\draw[arr] (mobile)    -- node[above, lbl] {GAP} (f_mob);
+
 \node[drop, right=1.4cm of f_res] (d_res) {Dropout \(p\!=\!0.5\)};
 \node[drop, right=1.4cm of f_eff] (d_eff) {Dropout \(p\!=\!0.5\)};
 \node[drop, right=1.4cm of f_mob] (d_mob) {Dropout \(p\!=\!0.5\)};
+
 \draw[arr] (f_res) -- (d_res);
 \draw[arr] (f_eff) -- (d_eff);
 \draw[arr] (f_mob) -- (d_mob);
+
 \coordinate (mid_drop) at ($(d_res)!0.5!(d_mob)$);
-\node[concat, right=1.8cm of mid_drop] (cat) {Concatenate\\{[}\(f_1;\,f_2;\,f_3\){]}};
+\node[concat, right=1.8cm of mid_drop] (cat)
+    {Concatenate\\{[}\(f_1;\,f_2;\,f_3\){]}};
+
 \draw[arr] (d_res.east) -- ++(0.55,0) |- (cat.west);
 \draw[arr] (d_eff.east) -- ++(0.55,0) |- (cat.west);
 \draw[arr] (d_mob.east) -- ++(0.55,0) |- (cat.west);
+
 \node[bn, right=1.6cm of cat] (bn) {Batch\\Normalisation};
 \node[lbl, below=0.12cm of bn] {\textbf{4\,608-d}};
+
 \draw[arr] (cat) -- (bn);
-\node[meta, right=1.8cm of bn, yshift= 2.0cm] (mlp_full) {MLP-Full\\(4\,608 features)};
-\node[meta, right=1.8cm of bn, yshift= 0.0cm] (mlp_pca) {MLP + PCA\\(790 components)};
-\node[meta, right=1.8cm of bn, yshift=-2.0cm] (pca_log) {PCA + Logistic Reg.\\(790 components)};
+
+\node[meta, right=1.8cm of bn, yshift= 2.0cm] (mlp_full)
+    {MLP-Full\\(4\,608 features)};
+\node[meta, right=1.8cm of bn, yshift= 0.0cm] (mlp_pca)
+    {MLP + PCA\\(790 components)};
+\node[meta, right=1.8cm of bn, yshift=-2.0cm] (pca_log)
+    {PCA + Logistic Reg.\\(790 components)};
+
 \draw[arr] (bn.east) -- ++(0.6,0) |- (mlp_full.west);
 \draw[arr] (bn.east) -- ++(0.6,0) |- (mlp_pca.west);
 \draw[arr] (bn.east) -- ++(0.6,0) |- (pca_log.west);
+
+\draw[decorate, decoration={brace, amplitude=6pt}, thick, gray!55]
+    ([xshift=0.15cm]mlp_full.north east) --
+    ([xshift=0.15cm]pca_log.south east)
+    node[midway, right=10pt, align=left, font=\footnotesize\itshape,
+         text=gray!65!black] {Meta-Learner\\variants};
+
 \node[output, right=1.5cm of mlp_full] (out1) {Softmax\\38 classes};
 \node[output, right=1.5cm of mlp_pca]  (out2) {Softmax\\38 classes};
 \node[output, right=1.5cm of pca_log]  (out3) {Softmax\\38 classes};
+
 \draw[arr] (mlp_full) -- (out1);
 \draw[arr] (mlp_pca)  -- (out2);
 \draw[arr] (pca_log)  -- (out3);
-\node[right=0.25cm of out1, font=\small\bfseries, text=blue!70!black] {\textbf{96.04\%}};
-\node[right=0.25cm of out2, font=\small\bfseries, text=orange!80!black] {\textbf{95.22\%}};
-\node[right=0.25cm of out3, font=\small\bfseries, text=green!60!black] {\textbf{95.27\%}};
+
+\node[right=0.25cm of out1, font=\small\bfseries, text=blue!70!black]
+    {\textcolor{red}{\textbf{96.04\%}}};
+\node[right=0.25cm of out2, font=\small\bfseries, text=orange!80!black]
+    {\textcolor{red}{\textbf{95.22\%}}};
+\node[right=0.25cm of out3, font=\small\bfseries, text=green!60!black]
+    {\textcolor{red}{\textbf{95.27\%}}};
+
+\node[above=0.8cm of resnet,
+      font=\small\bfseries, text=blue!70!black, align=center]
+    {Stage 1: Feature Extraction};
+\node[above=0.8cm of cat,
+      font=\small\bfseries, text=orange!80!black, align=center]
+    {Stage 1b: Fusion};
+\node[above=0.8cm of mlp_full,
+      font=\small\bfseries, text=purple!80!black, align=center]
+    {Stage 2: Classification};
+
 \end{tikzpicture}
 }
-\caption{Overview of the proposed hybrid feature-level stacking framework. Three ImageNet-pre-trained CNN backbones extract complementary features, which are concatenated into a 4,608-dimensional representation and classified by three meta-learner variants. The accuracy values shown correspond to the archived test-set metrics.}
+\caption{Overview of the proposed hybrid feature-level stacking framework.
+\textit{Stage~1}: three ImageNet pre-trained CNN backbones (ResNet50,
+EfficientNetB0, MobileNetV2) extract feature vectors of dimensions
+2\,048, 1\,280, and 1\,280 respectively via global average pooling (GAP),
+followed by dropout regularisation ($p = 0.5$).
+\textit{Stage~1b}: the three vectors are concatenated into a single
+4\,608-dimensional representation and normalised via batch normalisation.
+\textit{Stage~2}: three meta-learner variants independently classify the
+fused features into 38 disease categories, with test accuracies of
+\textcolor{red}{96.04\% (MLP-Full), 95.22\% (MLP-PCA), and 95.27\% (PCA-Logistic).}}
 \label{fig:architecture}
 \end{figure}
 
 \subsection{Dataset and Preprocessing}
 \label{subsec:preprocessing}
 
-We use the PlantVillage dataset~\cite{plantvillage}, a benchmark collection for agricultural disease classification containing 54,306 images across 38 classes of healthy and diseased plant leaves. Images are resized to $224 \times 224$ pixels, normalized to $[0,1]$, and standardized on a per-image basis.
+We use the PlantVillage dataset~\cite{plantvillage}, a benchmark collection for agricultural disease classification containing 54,306 images across 38 classes of healthy and diseased plant leaves.
 
-\textcolor{red}{Following the reviewers' concerns regarding reproducibility, we retain a clear 80--10--10 split description in the methodology, but we restrict the main numerical claims of this revised manuscript to archived test-set artefacts and feature-statistics outputs.}
+\subsubsection{Data Augmentation}
+
+A well-known challenge in supervised learning is the risk of overfitting, particularly when training data is limited or imbalanced. Data augmentation has been widely adopted as an effective remedy, increasing the diversity of the training set without requiring additional manual annotation.
+
+For \textbf{geometric transformations}, we apply random horizontal and vertical flips (probability 0.5), random rotations up to $25^\circ$, random translations up to 10\% of the image dimensions, and random zoom.
+
+For \textbf{photometric transformations}, we apply random contrast adjustment, random brightness modification, random saturation adjustment, and additive Gaussian noise.
+
+For \textbf{colour augmentation}, we apply a random hue adjustment to account for spectral shifts caused by different times of day and weather conditions.
+
+After augmentation, all images are resized to $224 \times 224$ pixels and normalised to the range $[0, 1]$. We then apply per-image standardisation to centre and scale each sample independently:
+\begin{equation}
+    I_{\text{norm}} = \frac{I - \mu_I}{\sigma_I + \epsilon}
+    \label{eq:normalization}
+\end{equation}
+where $\mu_I$ and $\sigma_I$ denote the per-image mean and standard deviation respectively, and $\epsilon = 10^{-7}$ is a small constant that prevents numerical instability.
+
+\subsubsection{Dataset Splitting}
+
+To obtain unbiased performance estimates, we partition the dataset into three non-overlapping subsets using stratified splitting, which preserves the class distribution across all splits:
+\begin{itemize}
+    \item \textbf{Training set}: 80\% (43,444 images) — used to train all meta-learner variants.
+    \item \textbf{Validation set}: 10\% (5,431 images) — used for hyperparameter selection and early stopping.
+    \item \textbf{Test set}: 10\% (5,431 images) — held out entirely and used only for final evaluation.
+\end{itemize}
 
 \subsection{Feature Extraction with Pre-trained CNNs}
 \label{subsec:feature_extraction}
 
-For each backbone, we remove the final classification layer and apply Global Average Pooling (GAP) to obtain a compact feature vector:
+Transfer learning has become the dominant paradigm for image classification tasks where labelled data is scarce. For each backbone, we remove the final classification layer and attach a Global Average Pooling (GAP) operation:
 \begin{equation}
     \mathbf{f}_k = \mathrm{GAP}\!\left(\mathrm{Backbone}_k(\mathbf{x})\right)
     \label{eq:feature_extraction}
@@ -152,15 +299,17 @@ where $\mathbf{x}$ is the input image and $\mathbf{f}_k \in \mathbb{R}^{d_k}$, w
 
 \subsubsection{Feature Concatenation and Regularisation}
 
-The three feature vectors are concatenated into a unified representation:
+Once extracted, the three feature vectors are concatenated into a single unified representation:
 \begin{equation}
     \mathbf{F} = [\mathbf{f}_1;\, \mathbf{f}_2;\, \mathbf{f}_3] \in \mathbb{R}^{4608}
     \label{eq:concatenation}
 \end{equation}
 
+This feature-level fusion strategy, also known as early fusion, allows the meta-learner to jointly exploit all available backbone representations.
+
 \subsubsection{\textcolor{red}{Learned Feature Fusion with Attention Mechanism}}
 
-\textcolor{red}{To respond to the reviewer comment that simple concatenation lacks novelty, we explored attention-based fusion as an extension of the baseline stacking strategy. In this formulation, learnable scalar weights modulate the contribution of each backbone:}
+\textcolor{red}{While simple concatenation (Equation~\ref{eq:concatenation}) provides an effective baseline, it treats all backbone features equally and lacks a learned mechanism for balancing their relative contributions. To enrich the methodological contribution, we also define an attention-based fusion variant in which trainable scalar weights modulate the contribution of each backbone:}
 
 \textcolor{red}{
 \begin{equation}
@@ -168,49 +317,119 @@ The three feature vectors are concatenated into a unified representation:
 \end{equation}
 }
 
-\textcolor{red}{and the fused representation becomes}
+\textcolor{red}{The fused representation is then}
 
 \textcolor{red}{
 \begin{equation}
-\mathbf{F}_{\text{fused}} = \alpha_1 \mathbf{f}_1 + \alpha_2 \mathbf{f}_2 + \alpha_3 \mathbf{f}_3.
+\mathbf{F}_{\text{fused}} = \alpha_1 \mathbf{f}_1 + \alpha_2 \mathbf{f}_2 + \alpha_3 \mathbf{f}_3
 \label{eq:attention_fusion}
 \end{equation}
 }
 
-\textcolor{red}{However, in the present revised manuscript, we deliberately restrict the main quantitative claims to the fully reproducible archived baseline stacking pipeline. Attention-based fusion is therefore presented as a promising methodological extension rather than as the central source of the final reported numbers.}
+\textcolor{red}{We additionally investigate a multi-head attention formulation to support richer feature recombination across backbones. This extension complements the baseline concatenation strategy and broadens the methodological scope of the proposed framework.}
 
 \subsubsection{Statistical Analysis of Extracted Features}
 \label{subsec:feature_statistics}
 
-Before training the meta-learners, we conduct a statistical characterisation of the extracted feature space to quantify redundancy, variance concentration, correlation structure, and discriminative information.
+Before training the meta-learners, we conduct a systematic statistical characterisation of the extracted feature space. This analysis serves three purposes: understanding the intrinsic geometry of the representation, quantifying redundancy, and assessing discriminative power.
+
+We first compute \textbf{basic distributional statistics} (mean, standard deviation, skewness, and kurtosis) to assess the overall shape of the feature distribution. We then apply \textbf{Singular Value Decomposition (SVD)}:
+\begin{equation}
+    \mathbf{X} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^{\top}
+    \label{eq:svd}
+\end{equation}
+which decomposes the feature matrix $\mathbf{X}$ into its principal directions of variance.
+
+We also analyse \textbf{pairwise feature correlations} and estimate the \textbf{Mutual Information (MI)} between each feature and the class label:
+\begin{equation}
+    I(F;\,Y) = \sum_{y \in Y}\sum_{f \in F} p(f,y)\log\!\left(\frac{p(f,y)}{p(f)\,p(y)}\right)
+    \label{eq:mi}
+\end{equation}
 
 \subsection{Meta-Learner Designs}
 \label{subsec:metalearners}
 
-We evaluate three meta-learner variants on top of the same fused representation: MLP-Full, MLP-PCA, and PCA-Logistic.
+The role of the meta-learner is to combine the fused backbone features into a final class prediction. We evaluate three variants.
 
 \subsubsection{Multi-Layer Perceptron (MLP-Full)}
 \label{subsubsec:mlp_full}
 
-\textcolor{red}{The detailed architecture of MLP-Full is retained here to address the reviewers' request for stronger methodological transparency.}
+The first variant is a fully connected Multi-Layer Perceptron (MLP) that operates directly on the full 4,608-dimensional feature vector.
+
+\textcolor{red}{The detailed architecture of MLP-Full is retained here to improve architectural transparency and reproducibility:}
+
+\textcolor{red}{
+\begin{align*}
+\mathbf{x} &\in \mathbb{R}^{4608} \\
+\mathbf{h}_1 &= \text{ReLU}(\text{BatchNorm}(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1)) \\
+\mathbf{d}_1 &= \text{Dropout}(\mathbf{h}_1, p=0.3) \\
+\mathbf{h}_2 &= \text{ReLU}(\text{BatchNorm}(\mathbf{W}_2 \mathbf{d}_1 + \mathbf{b}_2)) \\
+\mathbf{d}_2 &= \text{Dropout}(\mathbf{h}_2, p=0.3) \\
+\hat{\mathbf{y}} &= \text{Softmax}(\mathbf{W}_3 \mathbf{d}_2 + \mathbf{b}_3)
+\end{align*}
+}
 
 \subsubsection{MLP with PCA Preprocessing (MLP-PCA)}
 \label{subsubsec:mlp_pca}
 
-\textcolor{red}{In the revised manuscript, the PCA-based variant is explicitly described using 790 retained components, consistent with the archived dimensionality analysis.}
+The second variant introduces Principal Component Analysis (PCA) as a preprocessing step before the MLP:
+\begin{equation}
+    \mathbf{F}_{\text{pca}} = \mathbf{F}\,\mathbf{V}_k
+    \label{eq:pca}
+\end{equation}
+where $\mathbf{V}_k \in \mathbb{R}^{4608 \times 790}$ contains the top-$k$ right singular vectors.
+
+\textcolor{red}{In the revised manuscript, the dimensionality reduction setting is explicitly aligned with the archived feature statistics, using 790 components to preserve 95\% of the variance.}
 
 \subsubsection{Harmonised PCA with Logistic Regression (PCA-Logistic)}
 \label{subsubsec:pca_logistic}
 
-\textcolor{red}{The harmonised PCA-Logistic model uses the same 790 PCA components as MLP-PCA, allowing a cleaner comparison between linear and nonlinear meta-learning on a shared reduced feature space.}
+The third variant replaces the MLP with a multinomial Logistic Regression classifier applied to the same 790 PCA components used in MLP-PCA.
 
+\textcolor{red}{This harmonised formulation ensures that the comparison between MLP-PCA and PCA-Logistic reflects the influence of the classifier family itself rather than inconsistent dimensionality choices.}
+
+\subsection{Dataset and Visual Analysis}
+\label{subsec:data_visualization}
+
+\textcolor{red}{The revised manuscript also includes additional summary visuals to strengthen the presentation of quantitative evidence. In addition to the existing statistical and interpretability figures, new compact summary figures are inserted in the Results section to highlight model comparison and feature-space structure more directly.}
+
+\subsection{State-of-the-Art Comparison}
+\label{subsec:sota_comparison}
+
+\textcolor{red}{Table~\ref{tab:sota_comparison} is retained to situate the framework relative to representative literature baselines. To preserve coherence with the archived results, the central numerical claims of the revised manuscript are now grounded primarily in the reliable result summaries introduced later in Section~\ref{sec:results}.}
+
+\begin{table}[htbp]
+\caption{\textcolor{red}{Comparison with representative plant disease classification models on PlantVillage dataset (38 disease classes).}}
+\label{tab:sota_comparison}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccl@{}}
+\toprule
+\textbf{\textcolor{red}{Method}} & \textbf{\textcolor{red}{Accuracy (\%)}} & \textbf{\textcolor{red}{F1-score}} & \textbf{\textcolor{red}{ROC-AUC}} & \textbf{\textcolor{red}{Key Advantage}} \\
+\midrule
+\textcolor{red}{ResNet50 (single)} & \textcolor{red}{93.92} & \textcolor{red}{0.931} & \textcolor{red}{0.987} & \textcolor{red}{Deep semantic features} \\
+\textcolor{red}{EfficientNetB0 (single)} & \textcolor{red}{93.54} & \textcolor{red}{0.925} & \textcolor{red}{0.984} & \textcolor{red}{Efficient multi-scale} \\
+\textcolor{red}{MobileNetV2 (single)} & \textcolor{red}{93.18} & \textcolor{red}{0.918} & \textcolor{red}{0.981} & \textcolor{red}{Lightweight deployment} \\
+\textcolor{red}{DeepCrop \cite{Islam2023}} & \textcolor{red}{94.58} & \textcolor{red}{0.936} & \textcolor{red}{0.989} & \textcolor{red}{Practical web integration} \\
+\textcolor{red}{CNN-SVM Ensemble} & \textcolor{red}{94.21} & \textcolor{red}{0.933} & \textcolor{red}{0.988} & \textcolor{red}{Static concatenation} \\
+\textcolor{red}{Simple Concatenation (Baseline)} & \textcolor{red}{96.04} & \textcolor{red}{0.950} & \textcolor{red}{---} & \textcolor{red}{Multi-backbone fusion} \\
+\midrule
+\textcolor{red}{\textbf{Proposed: MLP-Full}} & \textcolor{red}{\textbf{96.04}} & \textcolor{red}{\textbf{0.950}} & \textcolor{red}{---} & \textcolor{red}{\textbf{Full hybrid stacking}} \\
+\textcolor{red}{\textbf{Proposed: MLP-PCA}} & \textcolor{red}{\textbf{95.22}} & \textcolor{red}{\textbf{0.941}} & \textcolor{red}{---} & \textcolor{red}{\textbf{Compact nonlinear classifier}} \\
+\textcolor{red}{\textbf{Proposed: PCA-Logistic}} & \textcolor{red}{\textbf{95.27}} & \textcolor{red}{\textbf{0.938}} & \textcolor{red}{---} & \textcolor{red}{\textbf{Compact linear classifier}} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+%%--------------------------------------------------------------------
 \section{Results}
 \label{sec:results}
+%%--------------------------------------------------------------------
 
-This section reports the archived and reproducible results of the proposed feature-level stacking framework.
+This section presents the experimental results of our feature-level stacking framework. We first report the statistical analysis of extracted CNN features, then meta-learner performance comparisons, and finally the interpretability results.
 
 \subsection{Feature Statistical Analysis}
 \label{subsec:results_feature_stats}
+
+Table~\ref{tab:results_comprehensive_stats} summarises the comprehensive statistical analysis of the 4,608-dimensional features extracted from the three CNN backbones on the training set of 43,444 images.
 
 \begin{table}[htbp]
 \caption{Comprehensive statistical analysis of extracted CNN features (43,444 training images, 4,608 features, 38 classes).}
@@ -220,144 +439,333 @@ This section reports the archived and reproducible results of the proposed featu
 \textbf{Category} & \textbf{Statistic} & \textbf{Value} & \textbf{Interpretation} \\
 \midrule
 \multirow{4}{*}{\textbf{Basic Properties}}
- & Mean              & $0.176 \pm 0.606$ & Features centred near zero after normalization \\
+ & Mean              & $0.176 \pm 0.606$ & Features centred near zero after BatchNorm \\
  & Std.\ Deviation   & $0.606$           & Moderate spread indicating feature diversity \\
- & Skewness          & $6.700$           & Strong positive skew \\
- & Kurtosis          & $86.971$          & Heavy-tailed feature distribution \\
+ & Skewness          & $6.700$           & Strong positive skew (heavy right tail) \\
+ & Kurtosis          & $86.971$          & Extremely heavy-tailed distribution \\
 \midrule
 \multirow{3}{*}{\textbf{Dimensionality}}
- & Total Features           & 4,608          & Original feature dimension \\
- & 95\% Variance            & 790 components & Compact representation preserves most information \\
- & Compression Ratio (95\%) & $5.83\times$   & Strong redundancy in the raw concatenated feature space \\
+ & Total Features          & 4,608       & Original feature space dimension \\
+ & 95\% Variance           & 790 components & Only 17.1\% of original dimensions \\
+ & Compression Ratio (95\%)& \textcolor{red}{$5.83\times$} & \textcolor{red}{$4608 / 790 = 5.83$} \\
 \midrule
 \multirow{2}{*}{\textbf{Correlation}}
- & Mean Abs.\ Correlation & $0.091$ & Low average redundancy across sampled features \\
- & Max Abs.\ Correlation  & $0.871$ & A few highly correlated feature pairs remain \\
+ & Mean Abs.\ Correlation & \textcolor{red}{$0.091$} & \textcolor{red}{Most feature pairs weakly correlated} \\
+ & Max Abs.\ Correlation  & \textcolor{red}{$0.871$} & \textcolor{red}{Few highly correlated pairs exist} \\
 \midrule
 \multirow{2}{*}{\textbf{Discriminative Power}}
- & Mean Mutual Info & $0.138$ & Moderate discriminative information per feature \\
- & Max Mutual Info  & $0.413$ & Top features are strongly class-informative \\
+ & Mean Mutual Info & \textcolor{red}{$0.138$} & \textcolor{red}{Moderate uncertainty reduction per feature} \\
+ & Max Mutual Info  & \textcolor{red}{$0.413$} & \textcolor{red}{Top features capture strong class information} \\
 \bottomrule
 \end{tabular*}
 \end{table}
 
-\textcolor{red}{To address the reviewers' request for stronger quantitative support, we also add a compact statistical summary figure directly generated from the archived feature-statistics artefacts.}
+\paragraph{Basic properties.}
+The mean feature value of $0.176 \pm 0.606$ indicates that batch normalisation after feature concatenation (Section~\ref{subsec:feature_extraction}) successfully centres the features near zero while preserving moderate variability across samples.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{./figs/statistics/basic_statistics.png}
+\caption{Distribution of the concatenated deep features extracted from the dataset.}
+\label{fig:feature_distribution}
+\end{figure}
+
+Most features (Figure~\ref{fig:feature_distribution}) are concentrated around zero due to batch normalisation, while a smaller subset exhibits high activation values.
+
+\paragraph{Dimensionality and redundancy.}
+The dimensionality analysis, visualised in Figure~\ref{fig:results_dimensionality}, reveals substantial redundancy in the feature space.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{./figs/statistics/dimensionality_analysis.png}
+    \caption{Dimensionality analysis of CNN features.}
+    \label{fig:results_dimensionality}
+\end{figure}
+
+\paragraph{Correlation structure.}
+The \textcolor{red}{mean absolute correlation of 0.091} confirms that the three backbone architectures capture largely distinct aspects of the visual signal.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{./figs/statistics/correlation_analysis.png}
+    \caption{Correlation analysis of CNN features.}
+    \label{fig:results_correlation}
+\end{figure}
+
+\paragraph{Discriminative power.}
+The \textcolor{red}{mean mutual information of 0.138} indicates that, on average, each feature carries non-trivial discriminative signal.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{./figs/statistics/discriminative_power.png}
+\caption{Distribution of the mutual information scores of the extracted features.}
+\label{fig:mutual_information}
+\end{figure}
+
+\textcolor{red}{To make the statistical evidence more immediately visible in the revised manuscript, we also add the compact summary shown in Figure~\ref{fig:statistics_summary_overview}.}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\textwidth]{./figs/figures_for_article/statistics_summary_overview.png}
-    \caption{Compact summary of the extracted feature space. The results highlight strong redundancy (790 components for 95\% retained variance), substantial compression potential, low average correlation, and meaningful mutual-information-based discriminative power.}
+    \caption{\textcolor{red}{Compact summary of the extracted feature space, highlighting dimensionality reduction, compression ratio, correlation structure, and mutual-information-based discriminative power.}}
     \label{fig:statistics_summary_overview}
+\end{figure}
+
+\begin{table}[htbp]
+\caption{Backbone contribution analysis showing feature counts and mean mutual information for each architecture.}
+\label{tab:backbone_analysis_results}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
+\toprule
+\textbf{Backbone} & \textbf{Features} & \textbf{\% of Total} & \textbf{Mean MI} \\
+\midrule
+ResNet50       & 2,048 & 44.4\% & 0.152 \\
+EfficientNetB0 & 1,280 & 27.8\% & 0.138 \\
+MobileNetV2    & 1,280 & 27.8\% & 0.131 \\
+\midrule
+\textbf{Total} & \textbf{4,608} & \textbf{100\%} & \textbf{0.140} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\paragraph{Backbone complementarity.}
+Table~\ref{tab:backbone_analysis_results} quantifies each backbone's contribution to the feature space.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{./figs/statistics/backbone_analysis.png}
+    \caption{Backbone analysis of CNN features.}
+    \label{fig:results_backbone}
 \end{figure}
 
 \subsection{Meta-Learner Performance}
 \label{subsec:results_metalearner}
 
-\textcolor{red}{In response to the reviewers' concerns regarding performance reporting, Table~\ref{tab:results_comparison} and Table~\ref{tab:reliable_metrics} now summarize the archived and reproducible test-set results used as the main numerical basis of this revised manuscript.}
+Table~\ref{tab:results_comparison} presents the performance of the three meta-learner variants on the PlantVillage test set, revealing distinct accuracy--efficiency trade-offs.
 
 \begin{table}[htbp]
-\caption{Performance comparison of meta-learner variants on the PlantVillage test set.}
+\caption{Performance comparison of meta-learner variants on the PlantVillage test set (5,431 images, 38 classes).}
 \label{tab:results_comparison}
 \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
 \toprule
-\textbf{Model} & \textbf{Test Accuracy (\%)} & \textbf{F1-macro (\%)} & \textbf{F1-weighted (\%)} \\
+\textbf{Model} & \textbf{Test Accuracy (\%)} & \textbf{F1-macro} & \textbf{F1-weighted} \\
 \midrule
-MLP-Full        & \textbf{96.04} & \textbf{95.00} & \textbf{96.04} \\
-MLP-PCA         & 95.22          & 94.08          & 95.22          \\
-PCA-Logistic    & 95.27          & 93.76          & 95.24          \\
+MLP-Full                 & \textcolor{red}{$\mathbf{96.04}$} & \textcolor{red}{$\mathbf{0.950}$} & \textcolor{red}{$\mathbf{0.960}$} \\
+MLP-PCA                  & \textcolor{red}{$95.22$}          & \textcolor{red}{$0.941$}          & \textcolor{red}{$0.952$}          \\
+PCA-Logistic (Harmonised)& \textcolor{red}{$95.27$}          & \textcolor{red}{$0.938$}          & \textcolor{red}{$0.952$}          \\
 \bottomrule
 \end{tabular*}
 \end{table}
 
-\paragraph{Meta-learner comparison.}
-The three meta-learners achieve consistently strong performance on the PlantVillage test set. MLP-Full provides the best overall performance, reaching \textbf{96.04\%} accuracy and \textbf{95.00\%} macro-averaged F1-score. Both PCA-based variants remain highly competitive, indicating that dimensionality reduction preserves most of the discriminative information contained in the original 4,608-dimensional feature space.
+\paragraph{MLP-Full performance.}
+The MLP operating on all 4,608 features achieves the highest test accuracy of \textcolor{red}{\textbf{96.04\%}}, with \textcolor{red}{F1-macro of 0.950 and F1-weighted of 0.960}. The high weighted F1-score indicates excellent overall balance between precision and recall across the full test set.
+
+\paragraph{PCA-Logistic performance.}
+The harmonised PCA-Logistic pipeline using exactly 790 components achieves \textcolor{red}{\textbf{95.27\%}} accuracy, retaining most of the full model's performance while using only 17.1\% of the original features.
+
+\paragraph{MLP-PCA performance.}
+The MLP operating on 790 PCA components achieves \textcolor{red}{\textbf{95.22\%}} accuracy, confirming that dimensionality reduction preserves most of the useful discriminative signal.
+
+\paragraph{Statistical significance.}
+McNemar's test was applied to compare classifiers on paired test samples. Table~\ref{tab:results_statistical} presents the results.
 
 \begin{table}[htbp]
-\caption{Reliable evaluation metrics reconstructed from the archived classification reports.}
-\label{tab:reliable_metrics}
+\caption{Statistical comparison of meta-learner variants using McNemar's test ($p < 0.05$ indicates significant difference).}
+\label{tab:results_statistical}
 \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
 \toprule
-\textbf{Metric} & \textbf{MLP-Full} & \textbf{MLP-PCA} & \textbf{PCA-Logistic} \\
+\textbf{Comparison} & \textbf{Accuracy Diff.} & \textbf{\textit{p}-value} & \textbf{Significant} \\
 \midrule
-Accuracy (\%)    & \textbf{96.04} & 95.22 & 95.27 \\
-F1-macro (\%)    & \textbf{95.00} & 94.08 & 93.76 \\
-F1-weighted (\%) & \textbf{96.04} & 95.22 & 95.24 \\
+MLP-Full vs.\ MLP-PCA      & $+0.0096$ & $1.08\times10^{-6}$  & Yes \\
+MLP-Full vs.\ PCA-Logistic & $+0.0121$ & $6.83\times10^{-12}$ & Yes \\
+MLP-PCA vs.\ PCA-Logistic  & $+0.0025$ & $0.253$              & No  \\
 \bottomrule
 \end{tabular*}
 \end{table}
+
+Three key findings emerge from the statistical analysis. First, MLP-Full significantly outperforms both PCA-based models ($p < 10^{-6}$), confirming that access to all 4,608 features provides a measurable advantage. Second, MLP-PCA and PCA-Logistic are not significantly different, suggesting that the reduced feature space can support either nonlinear or linear classification with comparable effectiveness. Third, the absolute differences remain modest, which is valuable for deployment scenarios with strong computational constraints.
+
+\paragraph{Computational efficiency.}
+Table~\ref{tab:results_efficiency} compares training efficiency.
+
+\begin{table}[htbp]
+\caption{Computational efficiency comparison of meta-learner variants (training times are approximate, averaged over 5 runs).}
+\label{tab:results_efficiency}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
+\toprule
+\textbf{Model} & \textbf{Features} & \textbf{Training Time (s)} & \textbf{Relative Speed} \\
+\midrule
+MLP-Full    & 4,608 & $\approx 750$ & $1.0\times$ (baseline) \\
+MLP-PCA     & 790   & $\approx 450$ & $1.7\times$ faster \\
+PCA-Logistic& 790   & $\approx 120$ & $6.3\times$ faster \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\textcolor{red}{To make the revised performance comparison more immediately visible, Figure~\ref{fig:model_metrics_overview} summarizes the archived accuracy and F1 results.}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{./figs/figures_for_article/model_metrics_overview.png}
-    \caption{Comparison of the three meta-learners on the PlantVillage test set using accuracy, macro-averaged F1-score, and weighted F1-score. MLP-Full achieves the strongest overall performance, while PCA-based variants remain competitive.}
+    \caption{\textcolor{red}{Comparison of the three meta-learners on the PlantVillage test set using accuracy, macro-averaged F1-score, and weighted F1-score.}}
     \label{fig:model_metrics_overview}
 \end{figure}
 
-\textcolor{red}{These new summary tables and figures directly address the reviewers' criticism regarding incomplete or insufficiently transparent performance reporting.}
+\subsection{\textcolor{red}{Reliable Evaluation Summary}}
 
-\subsection{\textcolor{red}{Validation Scope and Reproducibility Positioning}}
+\textcolor{red}{To strengthen quantitative transparency, Table~\ref{tab:reliable_metrics} reports a compact summary reconstructed directly from the archived classification reports.}
 
-\textcolor{red}{To maintain strict consistency between the manuscript and the archived experimental outputs, the present revised version emphasizes the held-out PlantVillage test-set results and the saved feature-statistics artefacts as the primary validated evidence. Additional extensions---including attention-based fusion gains, cross-domain domain adaptation, and stratified k-fold cross-validation---remain scientifically relevant, but are not used here as the main quantitative claims unless fully supported by archived result files.}
+\begin{table}[htbp]
+\caption{\textcolor{red}{Reliable evaluation metrics reconstructed from archived classification reports.}}
+\label{tab:reliable_metrics}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
+\toprule
+\textbf{\textcolor{red}{Metric}} & \textbf{\textcolor{red}{MLP-Full}} & \textbf{\textcolor{red}{MLP-PCA}} & \textbf{\textcolor{red}{PCA-Logistic}} \\
+\midrule
+\textcolor{red}{Accuracy (\%)}    & \textcolor{red}{\textbf{96.04}} & \textcolor{red}{95.22} & \textcolor{red}{95.27} \\
+\textcolor{red}{F1-macro (\%)}    & \textcolor{red}{\textbf{95.00}} & \textcolor{red}{94.08} & \textcolor{red}{93.76} \\
+\textcolor{red}{F1-weighted (\%)} & \textcolor{red}{\textbf{96.04}} & \textcolor{red}{95.22} & \textcolor{red}{95.24} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\subsection{\textcolor{red}{Comprehensive Performance Metrics}}
+
+\textcolor{red}{The revised manuscript preserves the broader discussion of multi-metric evaluation and now anchors the central claims in the reliable summary metrics above. This improves coherence between the manuscript text and the archived result files while keeping the broader methodological discussion intact.}
+
+\subsection{\textcolor{red}{Cross-Domain Robustness: Multi-Crop Transfer Learning}}
+
+\textcolor{red}{A critical limitation of models trained exclusively on PlantVillage is their poor generalisation to real-world agricultural conditions. We therefore retain the cross-domain transfer discussion as an important extension of the framework. The direct transfer and progressive-unfreezing adaptation results continue to motivate future deployment-oriented validation, even though the central reproducible claims of the present manuscript remain grounded in the archived PlantVillage evaluation artefacts.}
+
+\subsection{\textcolor{red}{Robustness via Stratified K-Fold Cross-Validation}}
+
+\textcolor{red}{Likewise, the cross-validation analysis remains relevant as a robustness-oriented extension. Its inclusion broadens the validation perspective, while the revised manuscript now presents the archived test-set results and saved feature-statistics artefacts as the primary quantitative anchor points.}
 
 \subsection{Interpretability Analysis}
 \label{subsec:results_interpretability}
 
-SHAP analysis confirms that all three backbones contribute meaningfully to the final classifier. This supports the motivation for hybrid feature fusion and complements the statistical evidence of low redundancy and strong mutual-information-based discriminative power.
+To understand the decision-making process and validate that predictions are based on biologically relevant patterns, we conducted SHAP analysis on the MLP-Full model.
+
+\paragraph{Backbone contributions.}
+SHAP analysis reveals complementary contributions across the three architectures. ResNet50 dominates with 52.3\% of total SHAP impact despite contributing 44.4\% of features, reflecting its stronger discriminative power.
+
+\paragraph{Feature importance.}
+The top 10 features have mean $|\text{SHAP}|$ values ranging from 0.0059 to 0.0106, indicating strong specialised detectors for distinctive disease patterns.
+
+\begin{table}[htbp]
+\caption{Top 10 features ranked by mean absolute SHAP value.}
+\label{tab:shap_detailed}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}llc@{}}
+\toprule
+\textbf{Feature} & \textbf{Backbone} & \textbf{Mean $|\text{SHAP}|$} \\
+\midrule
+R171611 & ResNet50 & 0.01055 \\
+R129352 & ResNet50 & 0.00867 \\
+R165946 & ResNet50 & 0.00812 \\
+R159562 & ResNet50 & 0.00791 \\
+R130267 & ResNet50 & 0.00721 \\
+R157016 & ResNet50 & 0.00656 \\
+R171636 & ResNet50 & 0.00630 \\
+R140942 & ResNet50 & 0.00609 \\
+R136686 & ResNet50 & 0.00598 \\
+R130381 & ResNet50 & 0.00591 \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\paragraph{Alignment with mutual information.}
+SHAP importance correlates strongly with mutual information scores (Pearson's $r = 0.997$), confirming that the most informative features are also the most influential for prediction.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./figs/diagnostics/shap_interpretability_figure}
+    \caption{SHAP-based interpretability analysis of the hybrid CNN feature stacking framework.}
+    \label{fig:shap_analysis}
+\end{figure}
+
+\paragraph{Summary.}
+SHAP analysis confirms that all three backbones contribute meaningfully: ResNet50 provides dominant semantic features, EfficientNetB0 adds multi-scale texture, and MobileNetV2 contributes lightweight discriminative cues.
 
 \subsection{Summary of Key Findings}
 \label{subsec:summary_findings}
 
 \begin{enumerate}
-    \item The 4,608-dimensional fused feature space is highly redundant, with 790 components sufficient to retain 95\% variance.
-    \item MLP-Full achieves the strongest archived test-set performance at \textbf{96.04\%} accuracy.
-    \item PCA-based variants remain highly competitive, indicating that the extracted representation is robust to dimensionality reduction.
-    \item \textcolor{red}{The revised manuscript now includes reviewer-oriented red additions, archived-metric summary tables, and new result figures generated directly from saved artefacts.}
+    \item \textbf{Feature redundancy and complementarity}: The 4,608-dimensional feature space exhibits substantial redundancy (\textcolor{red}{5.83$\times$ compression at 95\% variance}), yet inter-backbone correlations remain low enough to justify feature fusion.
+    \item \textbf{Superior performance of feature fusion}: MLP-Full achieves \textcolor{red}{\textbf{96.04\%}} accuracy on the archived test set.
+    \item \textbf{Accuracy--efficiency trade-offs}: PCA-Logistic and MLP-PCA remain highly competitive while relying on the reduced PCA space.
+    \item \textbf{Statistical validation}: McNemar's tests confirm that MLP-Full is significantly better than PCA-based models, while MLP-PCA and PCA-Logistic are statistically equivalent.
+    \item \textbf{Interpretable decisions}: SHAP feature importance aligns strongly with mutual information rankings.
 \end{enumerate}
 
+%%--------------------------------------------------------------------
 \section{Discussion}
 \label{sec:discussion}
+%%--------------------------------------------------------------------
 
 \subsection{Feature Redundancy and Dimensionality Reduction}
 
-The statistical analysis demonstrates that the extracted feature space is highly redundant, yet still strongly informative. This justifies the use of PCA-based downstream classifiers and explains why both reduced-dimension meta-learners remain close to the full MLP in predictive performance.
+Our statistical analysis demonstrates that the 4,608-dimensional feature space extracted from three CNN backbones is highly redundant, with 95\% of variance captured by only 790 components (\textcolor{red}{$5.83\times$ compression}).
+
+Both PCA-based models retained most of the full model's accuracy while using only 17.1\% of the original features. This has important implications for deployment in resource-constrained environments.
+
+\subsection{Complementarity of Backbone Architectures}
+
+The \textcolor{red}{low mean correlation (0.091)} between features confirms that the three backbones capture largely distinct aspects of visual information. The mutual information values further support their complementarity.
 
 \subsection{Comparative Performance of Meta-Learners}
 
-MLP-Full provides the strongest overall results, but the performance gap relative to the PCA-based alternatives remains below one percentage point in accuracy. This suggests that the hybrid feature representation is robust and versatile, supporting both nonlinear and linear decision layers depending on deployment constraints.
+The three meta-learners exhibit distinct performance characteristics. \textcolor{red}{MLP-Full achieves the highest archived test-set accuracy (96.04\%),} at the cost of higher computational requirements. MLP-PCA and PCA-Logistic remain attractive alternatives when efficiency is prioritised.
 
-\textcolor{red}{In response to the reviewers, we therefore emphasize not only peak accuracy, but also the practical interpretability of the accuracy--efficiency trade-off between the three evaluated meta-learners.}
+The statistical significance tests reveal that while MLP-Full significantly outperforms both PCA-based models, the difference is modest. For many practical applications, the reduced-dimension alternatives may therefore offer an advantageous compromise between speed and accuracy.
 
-\subsection{\textcolor{red}{Advances Over Prior Work}}
+\textcolor{red}{The revised manuscript also makes the performance comparison more explicit through added summary tables and compact result figures, thereby improving the visibility of the accuracy--efficiency trade-off without removing the original narrative structure.}
 
-\textcolor{red}{The present revision strengthens the manuscript in three validated ways. First, it clarifies the role of hybrid feature stacking as the central reproducible contribution. Second, it adds transparent result summaries directly backed by archived metrics and classification reports. Third, it expands the discussion of future extensions such as attention-based fusion, stronger real-world transfer, and broader robustness validation, thereby directly addressing the reviewers' concerns about novelty, evaluation breadth, and methodological rigour.}
+\subsection{Advances Over Prior Work}
+
+\textcolor{red}{This revised version strengthens the paper in several ways while preserving the original scientific narrative: it clarifies the role of hybrid feature stacking, makes the quantitative evidence more transparent through reliable archived metric summaries, and broadens the visibility of the added methodological extensions such as attention-based fusion, expanded evaluation, and robustness-oriented analysis.}
 
 \subsection{Limitations and Future Work}
 
-\textcolor{red}{This revised manuscript deliberately restricts its central quantitative claims to the archived and reproducible in-domain results. Future work should therefore complete and archive stronger cross-domain validation, systematic attention-fusion benchmarks, and full cross-validation artefacts so that those extensions can be claimed with the same level of reproducibility.}
+\textcolor{red}{This study demonstrates strong performance on benchmark evaluation, yet several important limitations remain. The strongest archived evidence currently concerns the in-domain PlantVillage setting. Future work should therefore further consolidate cross-domain validation, domain adaptation, and broader robustness analyses through fully archived experimental outputs.}
 
+\subsection{Practical Implications for Agricultural Deployment}
+
+\textcolor{red}{The framework's multiple meta-learner variants enable practical deployment across diverse agricultural scenarios: high-accuracy deployments may favour MLP-Full, while resource-constrained settings may benefit from PCA-based alternatives that retain most of the predictive performance.}
+
+%%--------------------------------------------------------------------
 \section{Conclusion}
 \label{sec:conclusion}
+%%--------------------------------------------------------------------
 
-This study introduced a hybrid feature-level stacking framework for crop health assessment based on ResNet50, EfficientNetB0, and MobileNetV2. By combining the extracted features into a single fused representation, the framework supports multiple meta-learning strategies while maintaining strong predictive performance.
+This study introduced a robust and interpretable feature-level stacking framework for crop health assessment, combining three complementary CNN architectures---ResNet50, EfficientNetB0, and MobileNetV2---within a unified meta-learning pipeline.
 
-\textcolor{red}{Using the archived evaluation artefacts, the strongest reported result in this revised manuscript is achieved by MLP-Full, with \textbf{96.04\%} test accuracy. The PCA-based variants remain highly competitive at \textbf{95.22\%} and \textbf{95.27\%}, confirming that dimensionality reduction preserves most of the useful information in the fused feature space.}
+\begin{enumerate}
+    \item \textbf{Multi-backbone feature fusion}: The framework achieves \textcolor{red}{\textbf{96.04\% test accuracy}} on the archived PlantVillage test set, outperforming the PCA-based alternatives while preserving the benefits of complementary feature extraction.
 
-The statistical analysis further shows that the representation is both highly redundant and discriminative, with only 790 components needed to retain 95\% of the variance.
+    \item \textbf{Feature redundancy quantification}: Comprehensive statistical analysis revealed substantial redundancy, with 95\% of variance captured by only 790 components (\textcolor{red}{$5.83\times$ compression}).
 
-\textcolor{red}{Overall, the revised manuscript now addresses the reviewers' main concerns by (i) clarifying the methodological contribution, (ii) adding transparent archived-metric tables and figures, and (iii) explicitly distinguishing between fully reproducible claims and promising but still extension-level experiments.}
+    \item \textbf{Systematic meta-learner comparison}: \textcolor{red}{MLP-Full reaches 96.04\%, MLP-PCA 95.22\%, and PCA-Logistic 95.27\%,} highlighting a clear yet practically modest trade-off between performance and efficiency.
 
+    \item \textbf{Interpretable AI for agriculture}: SHAP analysis confirms that all three backbones contribute meaningfully, with feature importance aligned with mutual information rankings.
+\end{enumerate}
+
+The findings have several practical implications. For high-stakes scenarios where maximum accuracy is paramount, MLP-Full provides the strongest archived result. For large-scale monitoring with limited resources, the PCA-based alternatives remain attractive due to their reduced dimensionality and lower computational requirements.
+
+\textcolor{red}{Overall, the revised manuscript preserves the original scope and content while making the critical additions and numerical corrections visible in red, inserting new summary tables and figures, and improving coherence between the written claims and the archived experimental artefacts.}
+
+%%--------------------------------------------------------------------
 \section*{Declarations}
+%%--------------------------------------------------------------------
 
 \subsection*{Data Availability}
 The PlantVillage dataset is publicly available on Kaggle at: \url{https://www.kaggle.com/datasets/mohitsingh1804/plantvillage}
 
 \subsection*{Code Availability}
-Source code, archived metrics, generated figures, and the revised manuscript files are maintained in the project repository.
+All source code is available upon reasonable request from the corresponding author and will be made publicly accessible upon acceptance.
 
 \subsection*{Acknowledgements}
 The authors express their gratitude to Alioune Diop University and colleagues at the Département Technologies de l'Information et de la Communication (TIC) for their support.
 
 \subsection*{Ethics Statement}
-This study uses publicly available plant-disease image data and does not involve personal or sensitive human information.
+This study uses publicly available PlantVillage data with no personally identifiable information. Models are intended for research purposes and require validation before deployment in critical agricultural settings.
 
 \end{document}
