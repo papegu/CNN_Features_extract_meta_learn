@@ -667,7 +667,7 @@ SHAP analysis confirms that all three backbones contribute meaningfully: ResNet5
 
 \begin{enumerate}
     \item \textbf{Feature redundancy and complementarity}: The 4,608-dimensional feature space exhibits substantial redundancy (\textcolor{red}{5.83$\times$ compression at 95\% variance}), yet inter-backbone correlations remain low enough to justify feature fusion.
-    \item \textbf{Superior performance of feature fusion}: MLP-Full achieves \textcolor{red}{\textbf{96.04\%}} accuracy on the archived test set.
+    \item \textbf{Superior performance of feature fusion}: MLP-Full achieves \textcolor{red}{\textbf{96.04\%}} accuracy on the \textcolor{red}{held-out PlantVillage test set}.
     \item \textbf{Accuracy--efficiency trade-offs}: PCA-Logistic and MLP-PCA remain highly competitive while relying on the reduced PCA space.
     \item \textbf{Statistical validation}: McNemar's tests confirm that MLP-Full is significantly better than PCA-based models, while MLP-PCA and PCA-Logistic are statistically equivalent.
     \item \textbf{Interpretable decisions}: SHAP feature importance aligns strongly with mutual information rankings.
@@ -690,7 +690,7 @@ The \textcolor{red}{low mean correlation (0.091)} between features confirms that
 
 \subsection{Comparative Performance of Meta-Learners}
 
-The three meta-learners exhibit a consistent accuracy--efficiency gradient. \textcolor{red}{MLP-Full achieves the strongest archived test performance (96.04\%),} but requires training over all 4,608 features, implying higher memory and computational costs. MLP-PCA and PCA-Logistic trade a modest accuracy reduction for a substantial reduction in feature dimensionality and shorter training times.
+The three meta-learners exhibit a consistent accuracy--efficiency gradient. \textcolor{red}{MLP-Full achieves the strongest held-out test performance (96.04\%),} but requires training over all 4,608 features, implying higher memory and computational costs. MLP-PCA and PCA-Logistic trade a modest accuracy reduction for a substantial reduction in feature dimensionality and shorter training times.
 
 The statistical significance tests reveal that while MLP-Full significantly outperforms both PCA-based models, the difference is modest. For many practical applications, the reduced-dimension alternatives may therefore offer an advantageous compromise between speed and accuracy.
 
@@ -723,7 +723,7 @@ This study introduced a robust and interpretable feature-level stacking framewor
     \item \textbf{Interpretable AI for agriculture}: SHAP analysis confirms that all three backbones contribute meaningfully, with feature importance aligned with mutual information rankings.
 \end{enumerate}
 
-The findings have several practical implications. For high-stakes scenarios where maximum accuracy is paramount, MLP-Full provides the strongest archived result. For large-scale monitoring with limited resources, the PCA-based alternatives remain attractive due to their reduced dimensionality and lower computational requirements.
+The findings have several practical implications. For high-stakes scenarios where maximum accuracy is paramount, MLP-Full provides the strongest held-out result. For large-scale monitoring with limited resources, the PCA-based alternatives remain attractive due to their reduced dimensionality and lower computational requirements.
 
 \textcolor{red}{These results show that hybrid feature-level stacking can simultaneously provide strong predictive performance, interpretable backbone complementarity, and flexible deployment trade-offs for crop-health assessment.}
 
