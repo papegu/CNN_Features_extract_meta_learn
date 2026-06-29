@@ -1,0 +1,26 @@
+{
+  "MLP-Full": {
+    "accuracy": 0.9604088021360833,
+    "f1_macro": 0.9500280667848906,
+    "f1_weighted": 0.9604412935630415
+  },
+  "MLP-PCA": {
+    "accuracy": 0.9522143449037842,
+    "f1_macro": 0.9407682634229747,
+    "f1_weighted": 0.952213884282685
+  },
+  "PCA-Logistic": {
+    "accuracy": 0.9526747076696437,
+    "f1_macro": 0.9375994393506176,
+    "f1_weighted": 0.9524263790614205
+  },
+  "comparisons": [
+    {
+      "model1": "MLP-Full",
+      "model2": "MLP-PCA",
+      "accuracy1": 0.9604088021360833,
+      "accuracy2": 0.9522143449037842,
+      "difference": 0.008194457232299057,
+      "mcnemar_chi2": 18.307328605200947,
+      "mcnemar_p": 1.879826119588479e-05,
+      "significant_0.05": 

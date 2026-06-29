@@ -1,0 +1,36 @@
+{
+  "basic": {
+    "n_samples": 43444,
+    "n_features": 4608,
+    "n_classes": 38,
+    "mean": 0.17646321654319763,
+    "std": 0.6059187054634094,
+    "min": -0.2767728865146637,
+    "max": 17.20345687866211,
+    "skewness": 6.699948787689209,
+    "kurtosis": 86.9710922241211
+  },
+  "dimensionality": {
+    "total_features": 4608,
+    "components_90": 431,
+    "components_95": 790,
+    "components_99": 1385,
+    "compression_ratio_95": 5.832911392405063
+  },
+  "correlation": {
+    "mean_abs_correlation": 0.09084713485380118,
+    "max_abs_correlation": 0.8706536278992094,
+    "n_high_correlations": 8
+  },
+  "discriminative": {
+    "mean_f_score": 260.56003694559814,
+    "max_f_score": 1188.7101742470456,
+    "mean_mutual_info": 0.13812534044252153,
+    "max_mutual_info": 0.4128724842562095
+  },
+  "separability": {
+    "pca_1_variance": 0.0903637483716011,
+    "pca_2_variance": 0.062004830688238144,
+    "total_2d_variance": 0.15236857533454895
+  }
+}
