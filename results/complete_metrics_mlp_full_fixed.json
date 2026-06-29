@@ -1,5 +1,5 @@
 {
-  "complete_metrics_aligned": {
+  "MLP-Full": {
     "accuracy": 0.4076972654451708,
     "precision_macro": 0.7713792552502463,
     "precision_micro": 0.4076972654451708,
@@ -1949,7 +1949,5 @@
       "class_idx": 2,
       "f1_score": 0.0
     }
-  },
-  "timestamp": "2026-06-29T14:02:27.741237",
-  "mode": "quick"
+  }
 }

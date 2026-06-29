@@ -1,0 +1,29 @@
+{
+  "MLP-Full": {
+    "accuracy": 0.9581990608599577,
+    "balanced_accuracy": 0.949230718040257,
+    "f1_macro": 0.945960744309773,
+    "f1_weighted": 0.9581166202727353
+  },
+  "MLP-PCA": {
+    "accuracy": 0.9486235153300802,
+    "balanced_accuracy": 0.9401091825642747,
+    "f1_macro": 0.9366269637406444,
+    "f1_weighted": 0.9487079450621626
+  },
+  "PCA-Logistic-Harmonized": {
+    "accuracy": 0.9461375563944389,
+    "balanced_accuracy": 0.9259127289320639,
+    "f1_macro": 0.9304293689620371,
+    "f1_weighted": 0.9458462347653047
+  },
+  "comparisons": [
+    {
+      "model1": "MLP-Full",
+      "model2": "MLP-PCA",
+      "accuracy1": 0.9581990608599577,
+      "accuracy2": 0.9486235153300802,
+      "difference": 0.009575545529877494,
+      "mcnemar_chi2": 23.786995515695068,
+      "mcnemar_p": 1.0760703494927526e-06,
+      "significant_0.05": 

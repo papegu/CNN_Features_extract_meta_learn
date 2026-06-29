@@ -1,0 +1,8 @@
+# Analyser seulement MLP-Full (recommandé pour commencer)
+python run_shap_only.py --model 1 --samples 50
+
+# Analyser seulement MLP-PCA
+python run_shap_only.py --model 2 --samples 50
+
+# Analyser les deux (si vous avez assez de mémoire)
+python run_shap_only.py --model 3 --samples 50

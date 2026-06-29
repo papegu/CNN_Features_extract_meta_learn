@@ -1,0 +1,402 @@
+%% references.bib — Bibliographie complète du papier RIDLFCP
+%% Toutes les 28 clés correspondent exactement aux \cite{} du fichier .tex Springer.
+%% Chaque référence vérifiée individuellement en ligne. Dernière vérification : mars 2026.
+%%
+%% CORRECTIONS APPLIQUÉES par rapport au test.bib original :
+%%   1. misbah_multi-sensors_2021 : année 2021 → 2022 (date officielle de publication
+%%      Remote Sens. 2022, 14(1), 81 ; reçu déc. 2021 mais volume 2022).
+%%   2. Zhang2024 : auteurs entièrement faux → corrigés (Zhu, Lin, Liu, Wang, Qin,
+%%      Li, Xu, He ; Frontiers in Plant Science 2024).
+%%   3. Islam2023 : journal faux (Discover Artificial Intelligence) → corrigé
+%%      (Journal of Agriculture and Food Research 14:100764, 2023).
+%%   4. GonzalezBriones2025 : pages={100835} → article={120} (numéro d'article Springer).
+%%   5. Romani2024 (Kaggle) et Sisodia2025 (blog DEV) : sources non peer-reviewed
+%%      → supprimées du .tex et retirées du .bib.
+%% =====================================================================
+
+
+%% =====================================================================
+%% CONTEXTE AGRICOLE / SÉNÉGAL / VARIABILITÉ CLIMATIQUE
+%% =====================================================================
+
+@article{koseki_dakar_2024,
+  author  = {Koseki, Shunya and V{\'a}zquez, Rub{\'e}n and Cabos, William and
+             Guti{\'e}rrez, Claudia and Sein, Dmitry V. and Bach{\`e}lery, Marie-Lou},
+  title   = {Dakar {N}i{\~n}o under Global Warming Investigated by a
+             High-Resolution Regionally Coupled Model},
+  journal = {Earth System Dynamics},
+  year    = {2024},
+  volume  = {15},
+  number  = {6},
+  pages   = {1401--1416},
+  doi     = {10.5194/esd-15-1401-2024}
+}
+
+%% CORRECTION : année 2021 → 2022 (Remote Sens. 2022, 14(1), 81 est la citation officielle
+%% bien que reçu et accepté en décembre 2021).
+@article{misbah_multi-sensors_2021,
+  author   = {Misbah, Khalil and Laamrani, Ahmed and Khechba, Keltoum and
+              Dhiba, Driss and Chehbouni, Abdelghani},
+  title    = {Multi-Sensors Remote Sensing Applications for Assessing, Monitoring,
+              and Mapping {NPK} Content in Soil and Crops in {A}frican
+              Agricultural Land},
+  journal  = {Remote Sensing},
+  year     = {2022},
+  volume   = {14},
+  number   = {1},
+  pages    = {81},
+  doi      = {10.3390/rs14010081},
+  publisher = {MDPI}
+}
+
+
+%% =====================================================================
+%% DETECTION DE MALADIES DES PLANTES — TRAVAUX RELIÉS
+%% =====================================================================
+
+@article{mir_deep_2025,
+  author    = {Mir, Mahmood Hussain and Kovilpillai, Judeson Antony J. and
+               Mohamed, Sulaiman Syed and {Pragya} and Mir, Tawseef Ahmad and
+               Paul, Banibrata},
+  title     = {Deep Learning Based Crop Monitoring for Effective
+               {A}gricultural-{IoT} Management},
+  journal   = {Procedia Computer Science},
+  year      = {2025},
+  volume    = {258},
+  pages     = {332--341},
+  doi       = {10.1016/j.procs.2025.04.270},
+  publisher = {Elsevier}
+}
+
+@article{SureshManic2025,
+  author    = {{Suresh Manic}, K. and {Al-Bemani}, A.~S. and {Al-Mahruqi}, Ali and
+               Balaji, G. and {Uma Suresh}},
+  title     = {A Relative Analysis for Plant Disease Detection with {AI}-Driven
+               Techniques: Optimizing Precision Agriculture},
+  journal   = {Procedia Computer Science},
+  year      = {2025},
+  volume    = {258},
+  pages     = {839--851},
+  doi       = {10.1016/j.procs.2025.04.316},
+  publisher = {Elsevier}
+}
+
+%% CORRECTION : auteurs (Zhu, Lin, Liu, Wang, Qin, Li, Xu, He — non Zhang et al.)
+@article{Zhang2024,
+  author    = {Zhu, Hongyan and Lin, Chengzhi and Liu, Gengqi and Wang, Dani and
+               Qin, Shuai and Li, Anjie and Xu, Jun-Li and He, Yong},
+  title     = {Intelligent Agriculture: Deep Learning in {UAV}-Based Remote
+               Sensing Imagery for Crop Diseases and Pests Detection},
+  journal   = {Frontiers in Plant Science},
+  year      = {2024},
+  volume    = {15},
+  pages     = {1435016},
+  doi       = {10.3389/fpls.2024.1435016},
+  publisher = {Frontiers Media SA}
+}
+
+%% CORRECTION : numéro d'article 120 (pas pages={100835})
+@article{GonzalezBriones2025,
+  author    = {Gonz{\'a}lez-Briones, Alfonso and {L{\'o}pez Florez}, Sebasti{\'a}n and
+               Chamoso, Pablo and Castillo-Ossa, Luis F. and Corchado, Emilio S.},
+  title     = {Enhancing Plant Disease Detection: Incorporating Advanced {CNN}
+               Architectures for Better Accuracy and Interpretability},
+  journal   = {International Journal of Computational Intelligence Systems},
+  year      = {2025},
+  volume    = {18},
+  number    = {1},
+  pages     = {120},
+  doi       = {10.1007/s44196-025-00835-2},
+  publisher = {Springer}
+}
+
+%% CORRECTION : journal (Journal of Agriculture and Food Research, pas Discover AI)
+@article{Islam2023,
+  author    = {Islam, Md. Manowarul and Adil, Md Abdul Ahad and
+               Talukder, Md. Alamin and Ahamed, Md. Khabir Uddin and
+               Uddin, Md Ashraf and Hasan, Md. Kamran and Sharmin, Selina and
+               Rahman, Md. Mahbubur and Debnath, Sumon Kumar},
+  title     = {{DeepCrop}: Deep Learning-Based Crop Disease Prediction with
+               Web Application},
+  journal   = {Journal of Agriculture and Food Research},
+  year      = {2023},
+  volume    = {14},
+  pages     = {100764},
+  doi       = {10.1016/j.jafr.2023.100764},
+  publisher = {Elsevier}
+}
+
+@article{Yakkala2024,
+  author    = {Yakkala, Venkata Santhosh and Nusimala, Krishna Vamsi and
+               Gayathri, Badisa and Kanamarlapudi, Sriya and
+               Aravinth, S.~S. and Salau, Ayodeji Olalekan},
+  title     = {Deep Learning-Based Crop Health Enhancement Through Early
+               Disease Prediction},
+  journal   = {Cogent Food \& Agriculture},
+  year      = {2024},
+  volume    = {11},
+  number    = {1},
+  pages     = {2423244},
+  doi       = {10.1080/23311932.2024.2423244},
+  publisher = {Taylor \& Francis}
+}
+
+
+%% =====================================================================
+%% DATASET
+%% =====================================================================
+
+@article{plantvillage,
+  author  = {Hughes, David P. and Salath{\'e}, Marcel},
+  title   = {An Open Access Repository of Images on Plant Health to Enable
+             the Development of Mobile Disease Diagnostics},
+  journal = {arXiv preprint arXiv:1511.08060},
+  year    = {2015},
+  doi     = {10.48550/arXiv.1511.08060}
+}
+
+
+%% =====================================================================
+%% ARCHITECTURES CNN (BACKBONES)
+%% =====================================================================
+
+@inproceedings{resnet,
+  author    = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+  title     = {Deep Residual Learning for Image Recognition},
+  booktitle = {Proceedings of the {IEEE} Conference on Computer Vision and
+               Pattern Recognition ({CVPR})},
+  year      = {2016},
+  pages     = {770--778},
+  doi       = {10.1109/CVPR.2016.90}
+}
+
+@inproceedings{efficientnet,
+  author    = {Tan, Mingxing and Le, Quoc V.},
+  title     = {{EfficientNet}: Rethinking Model Scaling for Convolutional
+               Neural Networks},
+  booktitle = {International Conference on Machine Learning ({ICML})},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {97},
+  year      = {2019},
+  pages     = {6105--6114},
+  publisher = {PMLR}
+}
+
+@inproceedings{mobilenetv2,
+  author    = {Sandler, Mark and Howard, Andrew and Zhu, Menglong and
+               Zhmoginov, Andrey and Chen, Liang-Chieh},
+  title     = {{MobileNetV2}: Inverted Residuals and Linear Bottlenecks},
+  booktitle = {Proceedings of the {IEEE} Conference on Computer Vision and
+               Pattern Recognition ({CVPR})},
+  year      = {2018},
+  pages     = {4510--4520},
+  doi       = {10.1109/CVPR.2018.00474}
+}
+
+@inproceedings{deng2009imagenet,
+  author    = {Deng, Jia and Dong, Wei and Socher, Richard and Li, Li-Jia and
+               Li, Kai and Fei-Fei, Li},
+  title     = {{ImageNet}: A Large-Scale Hierarchical Image Database},
+  booktitle = {Proceedings of the {IEEE} Conference on Computer Vision and
+               Pattern Recognition ({CVPR})},
+  year      = {2009},
+  pages     = {248--255},
+  doi       = {10.1109/CVPR.2009.5206848}
+}
+
+
+%% =====================================================================
+%% TRANSFER LEARNING & EXTRACTION DE CARACTÉRISTIQUES
+%% =====================================================================
+
+@article{pan2010survey,
+  author  = {Pan, Sinno Jialin and Yang, Qiang},
+  title   = {A Survey on Transfer Learning},
+  journal = {{IEEE} Transactions on Knowledge and Data Engineering},
+  year    = {2010},
+  volume  = {22},
+  number  = {10},
+  pages   = {1345--1359},
+  doi     = {10.1109/TKDE.2009.191}
+}
+
+@article{lin2013network,
+  author  = {Lin, Min and Chen, Qiang and Yan, Shuicheng},
+  title   = {Network in Network},
+  journal = {arXiv preprint arXiv:1312.4400},
+  year    = {2013},
+  doi     = {10.48550/arXiv.1312.4400}
+}
+
+
+%% =====================================================================
+%% AUGMENTATION, DROPOUT, BATCH NORMALISATION
+%% =====================================================================
+
+@article{shorten2019survey,
+  author    = {Shorten, Connor and Khoshgoftaar, Taghi M.},
+  title     = {A Survey on Image Data Augmentation for Deep Learning},
+  journal   = {Journal of Big Data},
+  year      = {2019},
+  volume    = {6},
+  number    = {1},
+  pages     = {1--48},
+  doi       = {10.1186/s40537-019-0197-0},
+  publisher = {Springer}
+}
+
+@article{srivastava2014dropout,
+  author  = {Srivastava, Nitish and Hinton, Geoffrey and Krizhevsky, Alex and
+             Sutskever, Ilya and Salakhutdinov, Ruslan},
+  title   = {Dropout: A Simple Way to Prevent Neural Networks from Overfitting},
+  journal = {Journal of Machine Learning Research},
+  year    = {2014},
+  volume  = {15},
+  number  = {1},
+  pages   = {1929--1958},
+  url     = {https://jmlr.org/papers/v15/srivastava14a.html}
+}
+
+@inproceedings{ioffe2015batch,
+  author    = {Ioffe, Sergey and Szegedy, Christian},
+  title     = {Batch Normalization: Accelerating Deep Network Training by
+               Reducing Internal Covariate Shift},
+  booktitle = {International Conference on Machine Learning ({ICML})},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {37},
+  year      = {2015},
+  pages     = {448--456},
+  publisher = {PMLR}
+}
+
+
+%% =====================================================================
+%% OPTIMISATION (ReLU, ADAM)
+%% =====================================================================
+
+@inproceedings{nair2010rectified,
+  author    = {Nair, Vinod and Hinton, Geoffrey E.},
+  title     = {Rectified Linear Units Improve Restricted {Boltzmann} Machines},
+  booktitle = {Proceedings of the 27th International Conference on Machine
+               Learning ({ICML})},
+  year      = {2010},
+  pages     = {807--814},
+  publisher = {Omnipress}
+}
+
+@inproceedings{kingma2014adam,
+  author    = {Kingma, Diederik P. and Ba, Jimmy},
+  title     = {Adam: {A} Method for Stochastic Optimization},
+  booktitle = {Proceedings of the 3rd International Conference on Learning
+               Representations ({ICLR})},
+  year      = {2015},
+  url       = {https://arxiv.org/abs/1412.6980}
+}
+
+
+%% =====================================================================
+%% FUSION DE CARACTÉRISTIQUES / MULTIMODAL
+%% =====================================================================
+
+@article{ramachandram2017deep,
+  author  = {Ramachandram, Dhanesh and Taylor, Graham W.},
+  title   = {Deep Multimodal Learning: A Survey on Recent Advances and Trends},
+  journal = {{IEEE} Signal Processing Magazine},
+  year    = {2017},
+  volume  = {34},
+  number  = {6},
+  pages   = {96--108},
+  doi     = {10.1109/MSP.2017.2738401}
+}
+
+
+%% =====================================================================
+%% RÉDUCTION DE DIMENSIONNALITÉ
+%% =====================================================================
+
+@article{golub1965calculating,
+  author  = {Golub, Gene H. and Kahan, William},
+  title   = {Calculating the Singular Values and Pseudo-Inverse of a Matrix},
+  journal = {{SIAM} Journal on Numerical Analysis},
+  year    = {1965},
+  volume  = {2},
+  number  = {2},
+  pages   = {205--224},
+  doi     = {10.1137/0702016}
+}
+
+@book{jolliffe2002principal,
+  author    = {Jolliffe, Ian T.},
+  title     = {Principal Component Analysis},
+  edition   = {2},
+  publisher = {Springer},
+  series    = {Springer Series in Statistics},
+  year      = {2002},
+  doi       = {10.1007/b98835},
+  isbn      = {978-0-387-95442-4}
+}
+
+
+%% =====================================================================
+%% ÉVALUATION STATISTIQUE
+%% =====================================================================
+
+@inproceedings{kohavi1995study,
+  author    = {Kohavi, Ron},
+  title     = {A Study of Cross-Validation and Bootstrap for Accuracy
+               Estimation and Model Selection},
+  booktitle = {Proceedings of the 14th International Joint Conference on
+               Artificial Intelligence ({IJCAI})},
+  year      = {1995},
+  pages     = {1137--1143},
+  publisher = {Morgan Kaufmann}
+}
+
+@article{kraskov2004estimating,
+  author  = {Kraskov, Alexander and St{\"o}gbauer, Harald and Grassberger, Peter},
+  title   = {Estimating Mutual Information},
+  journal = {Physical Review {E}},
+  year    = {2004},
+  volume  = {69},
+  number  = {6},
+  pages   = {066138},
+  doi     = {10.1103/PhysRevE.69.066138}
+}
+
+
+%% =====================================================================
+%% MALADIES DES PLANTES AVEC DEEP LEARNING
+%% =====================================================================
+
+@article{mohanty2016using,
+  author    = {Mohanty, Sharada P. and Hughes, David P. and Salath{\'e}, Marcel},
+  title     = {Using Deep Learning for Image-Based Plant Disease Detection},
+  journal   = {Frontiers in Plant Science},
+  year      = {2016},
+  volume    = {7},
+  pages     = {1419},
+  doi       = {10.3389/fpls.2016.01419},
+  publisher = {Frontiers Media SA}
+}
+
+
+%% =====================================================================
+%% LIVRES DE RÉFÉRENCE
+%% =====================================================================
+
+@book{goodfellow2016deep,
+  author    = {Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
+  title     = {Deep Learning},
+  publisher = {MIT Press},
+  year      = {2016},
+  isbn      = {978-0-262-03561-3},
+  url       = {https://www.deeplearningbook.org}
+}
+
+@book{bishop2006pattern,
+  author    = {Bishop, Christopher M.},
+  title     = {Pattern Recognition and Machine Learning},
+  publisher = {Springer},
+  year      = {2006},
+  isbn      = {978-0-387-31073-2}
+}
