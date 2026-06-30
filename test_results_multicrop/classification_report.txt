@@ -1,0 +1,36 @@
+                                  precision    recall  f1-score   support
+
+       banana_bract_mosaic_virus       0.97      0.85      0.91        80
+                  banana_cordana       0.92      0.98      0.95       112
+                  banana_healthy       0.92      0.98      0.95       216
+               banana_insectpest       0.98      0.90      0.94       142
+                     banana_moko       0.86      0.93      0.89        90
+                   banana_panama       0.98      0.77      0.86       222
+           banana_pestalotiopsis       0.77      0.91      0.83       116
+                 banana_sigatoka       0.71      0.92      0.80       176
+              banana_yb_sigatoka       0.94      0.97      0.96       558
+            cauliflower_Blackrot       1.00      0.89      0.94        18
+cauliflower_bacterial _spot _rot       1.00      0.88      0.93        32
+        cauliflower_downy_mildew       0.87      0.76      0.81        34
+             cauliflower_healthy       0.95      1.00      0.98        40
+              chilli_anthracnose       0.40      0.11      0.17        38
+                  chilli_healthy       0.74      0.90      0.81       102
+                 chilli_leafcurl       0.00      0.00      0.00        14
+                 chilli_leafspot       0.50      0.33      0.40        18
+                 chilli_whitefly       0.25      0.29      0.27        14
+                chilli_yellowish       0.38      0.43      0.40        14
+       groundnut_early_leaf_spot       0.98      0.74      0.84       340
+            groundnut_early_rust       1.00      1.00      1.00       294
+               groundnut_healthy       1.00      1.00      1.00        82
+        groundnut_late_leaf_spot       0.84      0.96      0.90       400
+  groundnut_nutrition_deficiency       0.98      0.96      0.97       332
+                  groundnut_rust       0.98      0.98      0.98       346
+          radish_black_leaf_spot       0.70      0.85      0.77       106
+            radish_downey_mildew       0.81      0.90      0.85       120
+              radish_flea_beetle       0.95      0.85      0.90        94
+                  radish_healthy       1.00      0.69      0.82       122
+                   radish_mosaic       0.90      1.00      0.95       110
+
+                        accuracy                           0.90      4382
+                       macro avg       0.81      0.79      0.79      4382
+                    weighted avg       0.91      0.90      0.90      4382
