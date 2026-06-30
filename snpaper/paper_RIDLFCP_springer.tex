@@ -49,7 +49,7 @@
 %% Diery Ngom                     — 0009-0001-8506-3558
 
 \abstract{
-Ensuring food security in climate-vulnerable regions such as Senegal requires timely crop health monitoring. While deep learning has advanced plant disease detection, single-model approaches often capture only a subset of the semantic, textural, and scale-dependent information required for robust crop diagnosis. We propose a hybrid feature-level stacking framework that combines deep representations from ResNet50, EfficientNetB0, and MobileNetV2 within a unified meta-learning pipeline. \textcolor{red}{Evaluated on the PlantVillage dataset (54,306 images, 38 classes), the framework achieves \textbf{96.04\%} test accuracy with MLP-Full, while MLP-PCA and PCA-Logistic reach \textbf{95.22\%} and \textbf{95.27\%}, respectively. Statistical analysis of the extracted feature space reveals substantial redundancy (5.83$\times$ compression at 95\% variance) alongside low inter-backbone correlation (mean $|r| = 0.091$), confirming the complementarity of the three architectures.} This framework overcomes limitations of single-model CNNs via multi-backbone fusion, integrated interpretability, and flexible accuracy-efficiency trade-offs, providing a practical AI-assisted solution for crop health assessment.
+Ensuring food security in climate-vulnerable regions such as Senegal requires timely crop health monitoring. While deep learning has advanced plant disease detection, single-model approaches often capture only a subset of the semantic, textural, and scale-dependent information required for robust crop diagnosis. We propose a hybrid feature-level stacking framework that combines deep representations from ResNet50, EfficientNetB0, and MobileNetV2 within a unified meta-learning pipeline. \textcolor{red}{Evaluated on the PlantVillage dataset (54,306 images, 38 classes), the framework achieves \textbf{96.04\%} test accuracy with MLP-Full, while MLP-PCA and PCA-Logistic reach \textbf{95.22\%} and \textbf{95.27\%}, respectively. Statistical analysis of the extracted feature space reveals substantial redundancy (5.83$\times$ compression at 95\% variance) alongside low inter-backbone correlation (mean $|r| = 0.091$), confirming the complementarity of the three architectures.} \textcolor{red}{To evaluate deployment realism, we additionally validated the adapted MLP-Full model on the real-world Multi-Crop Disease Dataset (4,382 field images), where direct transfer had previously yielded only 55.18\% accuracy. After target-domain adaptation, the proposed framework achieves \textbf{90.19\% accuracy}, \textbf{79.28\% macro-F1}, and \textbf{89.87\% weighted-F1}, demonstrating strong cross-domain robustness under realistic field conditions.} This framework overcomes limitations of single-model CNNs via multi-backbone fusion, integrated interpretability, and flexible accuracy-efficiency trade-offs, providing a practical AI-assisted solution for crop health assessment.
 }
 
 \keywords{Feature-level stacking, Convolutional Neural Networks, Plant disease detection, Model interpretability, Agricultural image analysis}
@@ -83,7 +83,7 @@ The main contributions of this work are fourfold:
 
     \item \textbf{Systematic evaluation of meta-learners} exposing meaningful accuracy-efficiency trade-offs: \textcolor{red}{MLP-Full (\textbf{96.04\% accuracy}), MLP-PCA (\textbf{95.22\%}), and PCA-Logistic (\textbf{95.27\%})}.
 
-    \item \textbf{Integrated explainability} confirming that all three backbones contribute meaningfully to classification, with models focusing on biologically relevant regions such as lesions, spots, and structural degradations.
+    \item \textbf{Integrated explainability and real-world validation} confirming that all three backbones contribute meaningfully to classification, while the adapted framework achieves \textcolor{red}{\textbf{90.19\% accuracy}} on the real-world Multi-Crop Disease Dataset, substantially improving over the \textcolor{red}{55.18\%} direct-transfer baseline.
 \end{enumerate}
 
 The proposed framework advances existing approaches on several fronts: it improves robustness through multi-model fusion, promotes transparency through integrated explainability, enables systematic statistical characterization of the feature space, and supports practical deployment through explicit accuracy-efficiency trade-off analysis.
@@ -671,13 +671,49 @@ Taken together, the SHAP results confirm that all three backbones contribute mea
     \item \textbf{Feature redundancy and complementarity.} The 4,608-dimensional feature space exhibits substantial redundancy (\textcolor{red}{5.83$\times$ compression at 95\% variance}), yet the inter-backbone correlation remains low enough to justify fusion.
     \item \textbf{Superior performance of feature fusion.} MLP-Full achieves \textcolor{red}{\textbf{96.04\%}} accuracy on the \textcolor{red}{held-out PlantVillage test set}.
     \item \textbf{Meaningful accuracy-efficiency trade-offs.} PCA-Logistic and MLP-PCA remain highly competitive while operating on the reduced PCA space.
-    \item \textbf{Statistical validation.} McNemar's tests confirm that MLP-Full is significantly better than both PCA-based models, while MLP-PCA and PCA-Logistic are statistically equivalent.
+    \item \textbf{Strong real-world adaptation.} On the \textcolor{red}{Multi-Crop Disease Dataset}, direct transfer previously yielded \textcolor{red}{55.18\%} accuracy, whereas the adapted MLP-Full model reaches \textcolor{red}{\textbf{90.19\% accuracy}}, \textcolor{red}{\textbf{79.28\% macro-F1}}, and \textcolor{red}{\textbf{89.87\% weighted-F1}} on \textcolor{red}{4,382 field images}.
     \item \textbf{Interpretable and grounded decisions.} SHAP feature importance aligns strongly with mutual information rankings.
 \end{enumerate}
 
-\subsection{\textcolor{red}{Cross-Domain Robustness and Extended Validation}}
+%%--------------------------------------------------------------------
+\subsection{\textcolor{red}{Validation on Real-World Data: Multi-Crop Disease Dataset}}
+\label{subsec:multicrop}
+%%--------------------------------------------------------------------
 
-\textcolor{red}{The original study also explored validation beyond the controlled PlantVillage setting. These analyses remain important for understanding deployment realism, but the central quantitative claims of the present manuscript are anchored in the held-out PlantVillage evaluation and the consolidated feature-space statistics. Cross-domain transfer and broader repeated-split validation are therefore retained here as important directions for continued evaluation rather than as core quantitative claims of the paper.}
+\textcolor{red}{To further assess the practical relevance of the proposed framework beyond the controlled PlantVillage benchmark, we conducted an additional evaluation on the Multi-Crop Disease Dataset, which contains real-world field images acquired under substantially more challenging conditions. In contrast to PlantVillage, this dataset includes strong variability in illumination, background clutter, leaf pose, occlusion, scale, and disease appearance, making it a more realistic benchmark for field deployment.}
+
+\textcolor{red}{A preliminary direct-transfer experiment, in which the PlantVillage-trained model was applied to Multi-Crop images without target-domain adaptation, yielded only 55.18\% accuracy. This result confirmed the presence of a severe domain shift between laboratory-style images and real field conditions.}
+
+\textcolor{red}{To address this limitation, we introduced a dedicated Multi-Crop adaptation stage for the MLP-Full classifier while preserving the same hybrid 4,608-dimensional CNN feature representation. The adapted model was then evaluated on a held-out Multi-Crop test set comprising \textbf{4,382 images}.}
+
+\begin{table}[htbp]
+\centering
+\caption{\textcolor{red}{Cross-domain evaluation on the Multi-Crop Disease Dataset.}}
+\label{tab:multicrop_results}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
+\toprule
+\textbf{Evaluation Setting} & \textbf{Accuracy (\%)} & \textbf{Macro-F1 (\%)} & \textbf{Weighted-F1 (\%)} \\
+\midrule
+Direct transfer from PlantVillage & 55.18 & -- & -- \\
+Adapted MLP-Full on Multi-Crop & \textcolor{red}{\textbf{90.19}} & \textcolor{red}{\textbf{79.28}} & \textcolor{red}{\textbf{89.87}} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\textcolor{red}{The adapted framework achieved \textbf{90.19\% accuracy}, with a \textbf{macro-F1 score of 79.28\%} and a \textbf{weighted-F1 score of 89.87\%}. Compared with the direct-transfer baseline, this corresponds to an absolute gain of \textbf{35.01 percentage points} in accuracy, demonstrating that the proposed hybrid feature representation remains highly effective under realistic field conditions when accompanied by an appropriate adaptation strategy.}
+
+\textcolor{red}{A closer inspection of the per-class results reveals that the adapted model performs especially well on several groundnut, banana, and radish categories, with F1-scores frequently above 0.90. For example, \textit{groundnut\_early\_rust} and \textit{groundnut\_healthy} both reach an F1-score of 1.00, while \textit{banana\_yb\_sigatoka} achieves 0.96 and \textit{radish\_mosaic} reaches 0.95. These results indicate that the fused multi-backbone representation transfers particularly well to classes with distinctive visual signatures.}
+
+\textcolor{red}{However, performance remains less uniform across certain low-support and visually ambiguous chilli-related classes, such as \textit{chilli\_leafcurl}, \textit{chilli\_whitefly}, and \textit{chilli\_anthracnose}. This discrepancy explains the gap between overall accuracy and macro-F1, and suggests that class imbalance and fine-grained inter-class similarity remain important challenges in real-world crop disease recognition.}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../test_results_multicrop/confusion_matrix.png}
+    \caption{\textcolor{red}{Confusion matrix of the adapted MLP-Full model on the Multi-Crop Disease Dataset test set. The matrix highlights strong performance on several banana, groundnut, and radish classes, while also revealing persistent confusion among a few chilli-related categories.}}
+    \label{fig:multicrop_confusion}
+\end{figure}
+
+\textcolor{red}{Overall, these results substantially strengthen the practical value of the proposed framework. They show that while direct transfer from PlantVillage to real-world conditions is insufficient, the hybrid CNN feature stacking approach can achieve strong field-oriented performance once explicitly adapted to the target domain.}
 
 %%--------------------------------------------------------------------
 \section{Discussion}
@@ -700,13 +736,19 @@ The three meta-learners exhibit distinct and well-characterized performance prof
 
 The statistical significance tests provide important context for interpreting these differences. While MLP-Full significantly outperforms both PCA-based models, the absolute performance gaps remain relatively small. This means that, depending on the deployment scenario, reduced-space models may offer a more attractive balance between computational efficiency and accuracy.
 
+\subsection{Real-World Generalization and Domain Adaptation}
+
+\textcolor{red}{The real-world Multi-Crop evaluation provides one of the most practically significant findings of this study. A direct transfer from PlantVillage to field images yielded only 55.18\% accuracy, confirming the severity of cross-domain degradation under realistic agricultural conditions. However, after explicit adaptation to the target domain, the same hybrid feature-level stacking pipeline achieved 90.19\% accuracy, together with 79.28\% macro-F1 and 89.87\% weighted-F1.}
+
+\textcolor{red}{This result shows that the core limitation is not the representational capacity of the fused CNN features themselves, but rather the mismatch between source and target acquisition conditions. Once this mismatch is addressed through target-domain adaptation, the stacked representation remains highly competitive even under field variability. At the same time, the remaining weakness on several chilli-related categories suggests that class imbalance and fine-grained visual overlap still deserve focused attention in future work.}
+
 \subsection{Advances Over Prior Work}
 
 \textcolor{red}{The framework extends prior plant-disease classification pipelines by combining complementary CNN backbones at the feature level, by explicitly quantifying redundancy and complementarity in the fused representation, and by showing that both nonlinear and linear meta-learners can exploit that representation effectively.}
 
 \subsection{Limitations and Future Work}
 
-Despite the promising results, this study has several limitations that open concrete directions for future investigation. The evaluation is conducted primarily on the PlantVillage dataset, whose controlled imaging conditions do not fully reflect the variability encountered in real agricultural environments. \textcolor{red}{Future work should therefore further strengthen field-oriented validation, adaptive fusion strategies, and broader robustness analyses under repeated-split protocols.}
+Despite the promising results, this study has several limitations that open concrete directions for future investigation. The evaluation is conducted primarily on the PlantVillage dataset, whose controlled imaging conditions do not fully reflect the variability encountered in real agricultural environments. \textcolor{red}{Although the new Multi-Crop validation substantially strengthens the practical relevance of the framework, future work should further investigate robustness on additional field datasets, stronger treatment of minority classes, and adaptive fusion strategies that could further improve the weaker chilli-related categories.}
 
 %%--------------------------------------------------------------------
 \section{Conclusion}
@@ -722,10 +764,12 @@ This paper presented a robust and interpretable feature-level stacking framework
 
     \item \textbf{Systematic meta-learner comparison.} \textcolor{red}{MLP-Full reaches 96.04\%, MLP-PCA 95.22\%, and PCA-Logistic 95.27\%,} highlighting a clear yet practically modest trade-off between predictive performance and efficiency.
 
+    \item \textbf{Real-world deployment relevance.} \textcolor{red}{On the Multi-Crop Disease Dataset, direct transfer produced only 55.18\% accuracy, whereas the adapted MLP-Full model achieved \textbf{90.19\% accuracy}, \textbf{79.28\% macro-F1}, and \textbf{89.87\% weighted-F1} on 4,382 real-world field images, confirming strong practical generalization after target-domain adaptation.}
+
     \item \textbf{Interpretable AI for agriculture.} SHAP analysis confirms that all three backbones contribute meaningfully to classification decisions, with feature-importance rankings aligned with mutual information.
 \end{enumerate}
 
-These findings carry several practical implications for agricultural AI deployment. In high-stakes scenarios where maximum accuracy is required, MLP-Full provides the strongest held-out result. For large-scale monitoring with limited resources, PCA-based alternatives remain attractive due to reduced dimensionality and lower computational requirements.
+These findings carry several practical implications for agricultural AI deployment. In high-stakes scenarios where maximum accuracy is required, MLP-Full provides the strongest held-out result. For large-scale monitoring with limited resources, PCA-based alternatives remain attractive due to reduced dimensionality and lower computational requirements. \textcolor{red}{For real-world field deployment, the new Multi-Crop results show that explicit target-domain adaptation is essential: once introduced, the proposed stacked representation remains highly effective outside the controlled benchmark setting.}
 
 \textcolor{red}{Overall, the reconstructed manuscript preserves the density of the original study while integrating the revised quantitative corrections, strengthened visual summaries, and reviewer-driven clarifications needed for a more coherent resubmission.}
 
