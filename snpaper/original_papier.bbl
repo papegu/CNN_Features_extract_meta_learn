@@ -1,0 +1,162 @@
+\begin{thebibliography}{28}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{\url{https://doi.org/#1}}
+\providecommand{\eprint}[2][]{\url{#2}}
+ \bibcommenthead
+
+\bibitem[{Bishop(2006)}]{bishop2006pattern}
+Bishop CM (2006) Pattern Recognition and Machine Learning. Springer
+
+\bibitem[{Deng et~al.(2009)Deng, Dong, Socher, Li, Li, and
+  Fei-Fei}]{deng2009imagenet}
+Deng J, Dong W, Socher R, et~al (2009) {ImageNet}: A large-scale hierarchical
+  image database. In: Proceedings of the {IEEE} Conference on Computer Vision
+  and Pattern Recognition ({CVPR}), pp 248--255,
+  \doi{10.1109/CVPR.2009.5206848}
+
+\bibitem[{Golub and Kahan(1965)}]{golub1965calculating}
+Golub GH, Kahan W (1965) Calculating the singular values and pseudo-inverse of
+  a matrix. {SIAM} Journal on Numerical Analysis 2(2):205--224.
+  \doi{10.1137/0702016}
+
+\bibitem[{Gonz{\'a}lez-Briones et~al.(2025)Gonz{\'a}lez-Briones, {L{\'o}pez
+  Florez}, Chamoso, Castillo-Ossa, and Corchado}]{GonzalezBriones2025}
+Gonz{\'a}lez-Briones A, {L{\'o}pez Florez} S, Chamoso P, et~al (2025) Enhancing
+  plant disease detection: Incorporating advanced {CNN} architectures for
+  better accuracy and interpretability. International Journal of Computational
+  Intelligence Systems 18(1):120. \doi{10.1007/s44196-025-00835-2}
+
+\bibitem[{Goodfellow et~al.(2016)Goodfellow, Bengio, and
+  Courville}]{goodfellow2016deep}
+Goodfellow I, Bengio Y, Courville A (2016) Deep Learning. MIT Press,
+  \urlprefix\url{https://www.deeplearningbook.org}
+
+\bibitem[{He et~al.(2016)He, Zhang, Ren, and Sun}]{resnet}
+He K, Zhang X, Ren S, et~al (2016) Deep residual learning for image
+  recognition. In: Proceedings of the {IEEE} Conference on Computer Vision and
+  Pattern Recognition ({CVPR}), pp 770--778, \doi{10.1109/CVPR.2016.90}
+
+\bibitem[{Hughes and Salath{\'e}(2015)}]{plantvillage}
+Hughes DP, Salath{\'e} M (2015) An open access repository of images on plant
+  health to enable the development of mobile disease diagnostics. arXiv
+  preprint arXiv:151108060 \doi{10.48550/arXiv.1511.08060}
+
+\bibitem[{Ioffe and Szegedy(2015)}]{ioffe2015batch}
+Ioffe S, Szegedy C (2015) Batch normalization: Accelerating deep network
+  training by reducing internal covariate shift. In: International Conference
+  on Machine Learning ({ICML}), Proceedings of Machine Learning Research,
+  vol~37. PMLR, pp 448--456
+
+\bibitem[{Islam et~al.(2023)Islam, Adil, Talukder, Ahamed, Uddin, Hasan,
+  Sharmin, Rahman, and Debnath}]{Islam2023}
+Islam MM, Adil MAA, Talukder MA, et~al (2023) {DeepCrop}: Deep learning-based
+  crop disease prediction with web application. Journal of Agriculture and Food
+  Research 14:100764. \doi{10.1016/j.jafr.2023.100764}
+
+\bibitem[{Jolliffe(2002)}]{jolliffe2002principal}
+Jolliffe IT (2002) Principal Component Analysis, 2nd edn. Springer Series in
+  Statistics, Springer, \doi{10.1007/b98835}
+
+\bibitem[{Kingma and Ba(2015)}]{kingma2014adam}
+Kingma DP, Ba J (2015) Adam: {A} method for stochastic optimization. In:
+  Proceedings of the 3rd International Conference on Learning Representations
+  ({ICLR}), \urlprefix\url{https://arxiv.org/abs/1412.6980}
+
+\bibitem[{Kohavi(1995)}]{kohavi1995study}
+Kohavi R (1995) A study of cross-validation and bootstrap for accuracy
+  estimation and model selection. In: Proceedings of the 14th International
+  Joint Conference on Artificial Intelligence ({IJCAI}). Morgan Kaufmann, pp
+  1137--1143
+
+\bibitem[{Koseki et~al.(2024)Koseki, V{\'a}zquez, Cabos, Guti{\'e}rrez, Sein,
+  and Bach{\`e}lery}]{koseki_dakar_2024}
+Koseki S, V{\'a}zquez R, Cabos W, et~al (2024) Dakar {N}i{\~n}o under global
+  warming investigated by a high-resolution regionally coupled model. Earth
+  System Dynamics 15(6):1401--1416. \doi{10.5194/esd-15-1401-2024}
+
+\bibitem[{Kraskov et~al.(2004)Kraskov, St{\"o}gbauer, and
+  Grassberger}]{kraskov2004estimating}
+Kraskov A, St{\"o}gbauer H, Grassberger P (2004) Estimating mutual information.
+  Physical Review {E} 69(6):066138. \doi{10.1103/PhysRevE.69.066138}
+
+\bibitem[{Lin et~al.(2013)Lin, Chen, and Yan}]{lin2013network}
+Lin M, Chen Q, Yan S (2013) Network in network. arXiv preprint arXiv:13124400
+  \doi{10.48550/arXiv.1312.4400}
+
+\bibitem[{Mir et~al.(2025)Mir, Kovilpillai, Mohamed, {Pragya}, Mir, and
+  Paul}]{mir_deep_2025}
+Mir MH, Kovilpillai JAJ, Mohamed SS, et~al (2025) Deep learning based crop
+  monitoring for effective {A}gricultural-{IoT} management. Procedia Computer
+  Science 258:332--341. \doi{10.1016/j.procs.2025.04.270}
+
+\bibitem[{Misbah et~al.(2022)Misbah, Laamrani, Khechba, Dhiba, and
+  Chehbouni}]{misbah_multi-sensors_2021}
+Misbah K, Laamrani A, Khechba K, et~al (2022) Multi-sensors remote sensing
+  applications for assessing, monitoring, and mapping {NPK} content in soil and
+  crops in {A}frican agricultural land. Remote Sensing 14(1):81.
+  \doi{10.3390/rs14010081}
+
+\bibitem[{Mohanty et~al.(2016)Mohanty, Hughes, and
+  Salath{\'e}}]{mohanty2016using}
+Mohanty SP, Hughes DP, Salath{\'e} M (2016) Using deep learning for image-based
+  plant disease detection. Frontiers in Plant Science 7:1419.
+  \doi{10.3389/fpls.2016.01419}
+
+\bibitem[{Nair and Hinton(2010)}]{nair2010rectified}
+Nair V, Hinton GE (2010) Rectified linear units improve restricted {Boltzmann}
+  machines. In: Proceedings of the 27th International Conference on Machine
+  Learning ({ICML}). Omnipress, pp 807--814
+
+\bibitem[{Pan and Yang(2010)}]{pan2010survey}
+Pan SJ, Yang Q (2010) A survey on transfer learning. {IEEE} Transactions on
+  Knowledge and Data Engineering 22(10):1345--1359. \doi{10.1109/TKDE.2009.191}
+
+\bibitem[{Ramachandram and Taylor(2017)}]{ramachandram2017deep}
+Ramachandram D, Taylor GW (2017) Deep multimodal learning: A survey on recent
+  advances and trends. {IEEE} Signal Processing Magazine 34(6):96--108.
+  \doi{10.1109/MSP.2017.2738401}
+
+\bibitem[{Sandler et~al.(2018)Sandler, Howard, Zhu, Zhmoginov, and
+  Chen}]{mobilenetv2}
+Sandler M, Howard A, Zhu M, et~al (2018) {MobileNetV2}: Inverted residuals and
+  linear bottlenecks. In: Proceedings of the {IEEE} Conference on Computer
+  Vision and Pattern Recognition ({CVPR}), pp 4510--4520,
+  \doi{10.1109/CVPR.2018.00474}
+
+\bibitem[{Shorten and Khoshgoftaar(2019)}]{shorten2019survey}
+Shorten C, Khoshgoftaar TM (2019) A survey on image data augmentation for deep
+  learning. Journal of Big Data 6(1):1--48. \doi{10.1186/s40537-019-0197-0}
+
+\bibitem[{Srivastava et~al.(2014)Srivastava, Hinton, Krizhevsky, Sutskever, and
+  Salakhutdinov}]{srivastava2014dropout}
+Srivastava N, Hinton G, Krizhevsky A, et~al (2014) Dropout: A simple way to
+  prevent neural networks from overfitting. Journal of Machine Learning
+  Research 15(1):1929--1958.
+  \urlprefix\url{https://jmlr.org/papers/v15/srivastava14a.html}
+
+\bibitem[{{Suresh Manic} et~al.(2025){Suresh Manic}, {Al-Bemani}, {Al-Mahruqi},
+  Balaji, and {Uma Suresh}}]{SureshManic2025}
+{Suresh Manic} K, {Al-Bemani} AS, {Al-Mahruqi} A, et~al (2025) A relative
+  analysis for plant disease detection with {AI}-driven techniques: Optimizing
+  precision agriculture. Procedia Computer Science 258:839--851.
+  \doi{10.1016/j.procs.2025.04.316}
+
+\bibitem[{Tan and Le(2019)}]{efficientnet}
+Tan M, Le QV (2019) {EfficientNet}: Rethinking model scaling for convolutional
+  neural networks. In: International Conference on Machine Learning ({ICML}),
+  Proceedings of Machine Learning Research, vol~97. PMLR, pp 6105--6114
+
+\bibitem[{Yakkala et~al.(2024)Yakkala, Nusimala, Gayathri, Kanamarlapudi,
+  Aravinth, and Salau}]{Yakkala2024}
+Yakkala VS, Nusimala KV, Gayathri B, et~al (2024) Deep learning-based crop
+  health enhancement through early disease prediction. Cogent Food \&
+  Agriculture 11(1):2423244. \doi{10.1080/23311932.2024.2423244}
+
+\bibitem[{Zhu et~al.(2024)Zhu, Lin, Liu, Wang, Qin, Li, Xu, and He}]{Zhang2024}
+Zhu H, Lin C, Liu G, et~al (2024) Intelligent agriculture: Deep learning in
+  {UAV}-based remote sensing imagery for crop diseases and pests detection.
+  Frontiers in Plant Science 15:1435016. \doi{10.3389/fpls.2024.1435016}
+
+\end{thebibliography}

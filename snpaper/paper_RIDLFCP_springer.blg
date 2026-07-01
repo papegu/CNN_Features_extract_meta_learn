@@ -1,48 +1,52 @@
 This is BibTeX, Version 0.99e
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: paper_RIDLFCP_springer.aux
-I found no \citation commands---while reading file paper_RIDLFCP_springer.aux
-I found no \bibdata command---while reading file paper_RIDLFCP_springer.aux
-I found no \bibstyle command---while reading file paper_RIDLFCP_springer.aux
-You've used 0 entries,
-            0 wiz_defined-function locations,
-            83 strings with 518 characters,
-and the built_in function-call counts, 0 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 0
-:= -- 0
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
-chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 0
-format.name$ -- 0
-if$ -- 0
-int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 0
-num.names$ -- 0
-pop$ -- 0
-preamble$ -- 0
-purify$ -- 0
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: sn-basic.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+Warning--I didn't find a database entry for "PremKumar2025_MultiCrop"
+sn-basic.bst [2024/07/19 v1.1 bibliography style]
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+You've used 27 entries,
+            3567 wiz_defined-function locations,
+            904 strings with 11270 characters,
+and the built_in function-call counts, 23527 in all, are:
+= -- 2196
+> -- 947
+< -- 20
++ -- 370
+- -- 281
+* -- 2008
+:= -- 3374
+add.period$ -- 45
+call.type$ -- 27
+change.case$ -- 249
+chr.to.int$ -- 30
+cite$ -- 27
+duplicate$ -- 1750
+empty$ -- 1908
+format.name$ -- 372
+if$ -- 4961
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 206
+newline$ -- 90
+num.names$ -- 108
+pop$ -- 596
+preamble$ -- 1
+purify$ -- 209
 quote$ -- 0
-skip$ -- 0
+skip$ -- 615
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 1874
+swap$ -- 549
+text.length$ -- 8
 text.prefix$ -- 0
-top$ -- 0
-type$ -- 0
+top$ -- 1
+type$ -- 234
 warning$ -- 0
-while$ -- 0
+while$ -- 140
 width$ -- 0
-write$ -- 0
-(There were 3 error messages)
+write$ -- 329
+(There was 1 warning)

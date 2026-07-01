@@ -12,8 +12,15 @@
 \usepackage{multirow}
 \usepackage{makecell}
 \usepackage{url}
+\usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{tikz}
+\graphicspath{
+    {./figs/figures/plantvillage/}
+    {./figs/figures/mc/}
+    {./figs/figures/}
+    {./figs/}
+}
 \usetikzlibrary{
     arrows.meta,
     shapes.geometric,
@@ -61,15 +68,19 @@ Ensuring food security in climate-vulnerable regions such as Senegal requires ti
 \label{sec:intro}
 %%--------------------------------------------------------------------
 
-Monitoring crop health accurately and at scale remains one of the most pressing challenges in modern agriculture, particularly in regions exposed to high climatic variability such as Senegal. The country faces recurrent droughts, erratic rainfall, and increasing pressure on crop productivity, making early disease detection and yield preservation essential to food security and rural resilience.
+Monitoring crop health accurately and at scale remains one of the most pressing challenges in modern agriculture, particularly in regions exposed to high climatic variability such as Senegal. The country faces irregular rainfall, recurring droughts, and rising temperatures, all of which place increasing pressure on agricultural productivity and food security~\cite{koseki_dakar_2024}. Traditional approaches based on visual field inspection and expert judgment are time-consuming, difficult to scale, and inherently subjective. They fall short of capturing the complex and dynamic interactions among climatic, environmental, and agronomic factors that characterize real agricultural settings~\cite{misbah_multi-sensors_2021}.
 
-Against this backdrop, deep learning and Convolutional Neural Networks (CNNs) in particular have emerged as a powerful paradigm for plant disease detection and crop monitoring from image data. A growing body of work has shown that CNN-based methods outperform handcrafted feature pipelines by automatically learning complex visual patterns related to lesions, discoloration, mold, and texture disruption.
+Against this backdrop, deep learning and Convolutional Neural Networks (CNNs) in particular have emerged as a powerful paradigm for plant disease detection and crop monitoring from image data. A recent study by Hussain et al.~\cite{mir_deep_2025} demonstrated how deep learning can strengthen IoT-based crop monitoring by automating greenhouse surveillance and environmental regulation. Their framework couples sensor data with advanced activation functions (ELU, Swish, ReLU, SELU, and Mish) to reduce human intervention and improve sustainability. While the results are encouraging, the approach is confined to controlled greenhouse conditions and does not readily extend to open-field scenarios.
 
-Several comparative studies have further benchmarked popular CNN architectures for crop health monitoring. Suresh Manic et al.~\cite{SureshManic2025} evaluated EfficientNetB0, InceptionV3, DenseNet121, and MobileNetV2 for crop disease identification, highlighting the importance of architecture selection for accuracy and computational efficiency. Beyond ground-level imaging, UAV-based remote sensing has also been explored for large-scale crop monitoring. Zhang et al.~\cite{Zhang2024} investigated how deep learning can be applied to aerial imagery for crop disease and pest detection, demonstrating the importance of robust features under challenging acquisition conditions.
+Several comparative studies have further benchmarked popular CNN architectures for crop health monitoring. Suresh Manic et al.~\cite{SureshManic2025} evaluated EfficientNetB0, InceptionV3, DenseNet121, and MobileNetV2, finding that EfficientNetB0 achieved the highest validation accuracy (96.4\%) while remaining suitable for edge deployment in resource-constrained environments. González-Briones et al.~\cite{GonzalezBriones2025} showed that ResNet-50 and EfficientNet, when paired with explainability mechanisms, achieve respectively 63.79\% and 98.27\% accuracy on PlantVillage, underscoring that architecture choice involves trade-offs among accuracy, robustness, and interpretability. These findings point to a broader consensus: no single architecture dominates across all conditions, and transparency is increasingly recognized as a deployment requirement rather than an optional feature.
 
-Islam et al.~\cite{Islam2023} proposed DeepCrop, a deep learning framework for crop disease prediction that compared CNN, VGG-16, VGG-19, and ResNet-50 on the PlantVillage dataset. ResNet-50 emerged as the strongest performer, confirming the value of transfer learning on plant pathology benchmarks. Yakkala et al.~\cite{Yakkala2024} developed an early disease prediction framework based on ResNet-9, which classifies healthy and diseased leaves from morphological features including color, intensity, and shape.
+Beyond ground-level imaging, UAV-based remote sensing has also been explored for large-scale crop monitoring. Zhang et al.~\cite{Zhang2024} investigated how deep learning can be applied to aerial imagery from unmanned vehicles to detect diseases and pests across wide agricultural areas. Although promising in scope, this line of work still faces challenges related to data variability, model generalization, and the computational demands of real-time processing at scale.
 
-Despite these advances, most existing methods share a common structural limitation: they rely on a single model architecture, whether ResNet50, EfficientNet, or MobileNetV2, which inevitably captures only part of the discriminative information contained in crop images. Different architectures emphasize different aspects of visual structure: deep residual networks capture high-level semantics, efficient compound-scaled networks preserve multi-scale structure, and lightweight mobile architectures often encode compact local texture cues.
+Islam et al.~\cite{Islam2023} proposed DeepCrop, a deep learning framework for crop disease prediction that compared CNN, VGG-16, VGG-19, and ResNet-50 on the PlantVillage dataset. ResNet-50 emerged as the best-performing architecture with 98.98\% accuracy and robust cross-validation results. Beyond model performance, the authors developed a web application that allows farmers to upload leaf images for real-time diagnosis and treatment suggestions, demonstrating how research-grade models can be embedded into accessible tools for smallholder farmers. Their study nonetheless remains limited to controlled benchmark data and does not address the challenge of field-collected images.
+
+Yakkala et al.~\cite{Yakkala2024} developed an early disease prediction framework based on ResNet-9, which classifies healthy and diseased leaves from morphological features including color, intensity, and spatial dimensions. The model showed high accuracy supported by systematic preprocessing and augmentation strategies, and the authors made a point of integrating their approach with biological control methods, positioning it as both technologically sound and ecologically responsible.
+
+Despite these advances, most existing methods share a common structural limitation: they rely on a single model architecture, whether ResNet50, EfficientNet, or MobileNetV2, which inevitably captures only a partial view of the visual information present in plant disease images. Models trained on controlled benchmark datasets like PlantVillage frequently suffer from domain shift when applied to real agricultural conditions, including images captured in the field, by drones, or under variable illumination. This leads to overfitting and reduced robustness in practical deployment. Furthermore, most studies focus exclusively on end-to-end classification without exploiting the complementary strengths of multiple architectures or providing meaningful insight into how predictions are made. The result is systems that may perform well on benchmarks but remain opaque and fragile in practice.
 
 To address these challenges, we propose a \textbf{hybrid feature-level stacking framework} that fuses deep representations from three complementary CNN architectures: \textbf{ResNet50}, \textbf{EfficientNetB0}, and \textbf{MobileNetV2}. Their extracted features are concatenated into a shared 4,608-dimensional representation and subsequently processed by alternative meta-learners, enabling both predictive gains and interpretable trade-offs between performance and efficiency.
 
@@ -247,15 +258,15 @@ fused features into 38 disease categories, with test accuracies of
 \subsection{Dataset and Preprocessing}
 \label{subsec:preprocessing}
 
-We use the PlantVillage dataset~\cite{plantvillage}, a widely adopted benchmark for plant disease classification containing 54,306 images across 38 classes of healthy and diseased plant leaves. This dataset remains attractive for controlled benchmarking because it offers both taxonomic diversity and clear disease-specific morphology, enabling systematic model comparison under consistent conditions.
+We use the PlantVillage dataset~\cite{plantvillage}, a widely adopted benchmark for plant disease classification containing 54,306 images across 38 classes of healthy and diseased plant leaves. The dataset spans 14 crop species, namely apple, blueberry, cherry, corn, grape, orange, peach, pepper, potato, raspberry, soybean, squash, strawberry, and tomato, with multiple disease conditions represented per crop.
 
 \subsubsection{Data Augmentation}
 
-One of the most persistent challenges in supervised learning is the risk of overfitting, especially when training data is limited or unevenly distributed across classes. Data augmentation has become a standard remedy because it increases apparent diversity without requiring additional manual annotation.
+One of the most persistent challenges in supervised learning is the risk of overfitting, especially when training data is limited or unevenly distributed across classes. Data augmentation has become a standard remedy: by artificially diversifying the training distribution, it encourages models to develop invariant representations rather than memorizing specific image instances~\cite{shorten2019survey}. We therefore design a multi-branch augmentation pipeline operating along three complementary axes.
 
-For \textbf{geometric transformations}, we apply random horizontal and vertical flips with probability 0.5, random rotations up to $25^\circ$, random translations of up to 10\% of the image dimensions, and random zoom. These transformations improve invariance to viewpoint changes, crop framing, and leaf positioning.
+For \textbf{geometric transformations}, we apply random horizontal and vertical flips with probability 0.5, random rotations up to $25^\circ$, random translations of up to 10\% of the image dimensions, and random zoom within the range $[0.8, 1.2]$. These operations simulate the natural variability in plant orientation and capture distance that arises in field photography.
 
-For \textbf{photometric transformations}, we apply random contrast adjustment (factor $[0.8, 1.2]$), random brightness modification ($\delta = 0.1$), random saturation adjustment (factor $[0.8, 1.2]$), and additive Gaussian noise. These perturbations help the network tolerate illumination differences, sensor variability, and local acquisition noise.
+For \textbf{photometric transformations}, we apply random contrast adjustment (factor $[0.8, 1.2]$), random brightness modification ($\delta = 0.1$), random saturation adjustment (factor $[0.8, 1.2]$), and Gaussian noise injection ($\sigma = 0.01$). These perturbations replicate the effect of changing lighting conditions and sensor noise, two sources of variability that are particularly common in outdoor agricultural imaging~\cite{mohanty2016using}.
 
 For \textbf{colour augmentation}, we apply a random hue adjustment ($\delta = 0.05$) to account for spectral shifts caused by varying times of day and weather conditions.
 
@@ -265,10 +276,93 @@ After augmentation, all images are resized to $224 \times 224$ pixels and normal
     \label{eq:normalization}
 \end{equation}
 where $\mu_I$ and $\sigma_I$ denote the per-image mean and standard deviation, and $\epsilon = 10^{-7}$ is a small constant that prevents numerical instability in cases of near-zero variance.
+\subsection{Dataset Visual Examples}
+\label{sec:dataset_examples}
 
+Figure~\ref{fig:dataset_samples} illustrates representative samples from both 
+datasets used in this study. The PlantVillage images (top row) depict controlled, 
+laboratory-style leaf photographs under uniform background and lighting, while the 
+Multi-Crop Disease Dataset images (bottom row) reflect realistic field conditions 
+including background clutter, variable illumination, and partial occlusion. This 
+visual contrast underscores the severity of the domain shift addressed in 
+Section~\ref{sec:multicrop_validation}.
+
+\begin{figure}[htbp]
+    \centering
+    % ---- Row 1 : PlantVillage ----
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_healthy_tomato.jpg}
+        \caption*{Tomato\\Healthy}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_disease_tomato.jpg}
+        \caption*{Tomato\\Late Blight}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_healthy_corn.jpg}
+        \caption*{Corn\\Healthy}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_disease_corn.jpg}
+        \caption*{Corn\\Common Rust}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_healthy_pepper.jpg}
+        \caption*{Pepper\\Healthy}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_disease_pepper.jpg}
+        \caption*{Pepper\\Bacterial Spot}
+    \end{subfigure}
+
+    \vspace{0.4cm}
+
+    % ---- Row 2 : Multi-Crop field images ----
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_health_kani.jpg}
+        \caption*{Kani\\Healthy}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{pv_desease_anthracnose.jpg}
+        \caption*{Anthracnose}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{early_leaf.jpg}
+        \caption*{Early Leaf}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{early_rust.jpg}
+        \caption*{Early Rust}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{bacterial_spot.jpg}
+        \caption*{Bacterial Spot}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.16\textwidth}
+        \includegraphics[width=\textwidth]{health_spot.jpg}
+        \caption*{Healthy Spot}
+    \end{subfigure}
+
+    \caption{Representative samples from the two datasets. \textbf{Top row:}
+    PlantVillage images captured under controlled laboratory conditions with uniform 
+    white background. \textbf{Bottom row:} Multi-Crop Disease Dataset images acquired 
+    in the field, exhibiting realistic variability in background, lighting, and leaf 
+    orientation. The visual contrast between the two rows illustrates the domain shift 
+    that motivates the target-domain adaptation strategy described in 
+    Section~\ref{sec:multicrop_validation}.}
+    \label{fig:dataset_samples}
+\end{figure}
+\textcolor{red}{To visually illustrate the augmentation strategy used during training, Figure~\ref{fig:augmentation_pipeline} presents representative examples before and after transformation. The augmented images preserve the main disease-related structures while introducing realistic variations in orientation, scale, illumination, colour balance, and local noise. This confirms that the augmentation pipeline increases visual diversity without altering the biological patterns that are essential for disease recognition.}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{fig_augmentation.png}
+    \caption{\textcolor{red}{Representative examples of the data augmentation pipeline applied to PlantVillage leaf images. The first row shows original images, while the second row shows their augmented counterparts after random flipping, rotation, translation, zoom, contrast adjustment, brightness perturbation, Gaussian noise injection, and hue transformation. These operations increase data diversity while preserving disease-relevant visual characteristics.}}
+    \label{fig:augmentation_pipeline}
+\end{figure}
 \subsubsection{Dataset Splitting}
 
-To obtain unbiased performance estimates, the dataset is partitioned into three non-overlapping subsets using stratified splitting, which preserves the class distribution across all splits:
+To obtain unbiased performance estimates, the dataset is partitioned into three non-overlapping subsets using stratified splitting, which preserves the class distribution across all splits~\cite{kohavi1995study}:
 \begin{itemize}
     \item \textbf{Training set}: 80\% (43,444 images), used to train all meta-learner variants.
     \item \textbf{Validation set}: 10\% (5,431 images), used for hyperparameter selection and early stopping.
@@ -278,14 +372,14 @@ To obtain unbiased performance estimates, the dataset is partitioned into three 
 \subsection{Feature Extraction with Pre-trained CNNs}
 \label{subsec:feature_extraction}
 
-Transfer learning has become the dominant paradigm for image classification tasks where labeled data is scarce or costly to acquire, as it allows models pre-trained on large-scale datasets to be repurposed for new domains with limited retraining.
+Transfer learning has become the dominant paradigm for image classification tasks where labeled data is scarce or costly to acquire, as it allows models pre-trained on large-scale datasets to be adapted to new visual domains with minimal additional training~\cite{pan2010survey}. Building on this principle, we use three CNN architectures pre-trained on ImageNet~\cite{deng2009imagenet} as fixed feature extractors: ResNet50~\cite{resnet}, EfficientNetB0~\cite{efficientnet}, and MobileNetV2~\cite{mobilenetv2}. Each was selected for its distinct architectural design philosophy, as discussed in Section~\ref{sec:intro}, and together they provide a set of visual representations that are both rich and complementary.
 
-For each backbone, the final classification layer is removed and replaced by a Global Average Pooling (GAP) operation~\cite{lin2013network}, which compresses the last convolutional feature map into a compact fixed-length descriptor:
+For each backbone, the final classification layer is removed and replaced by a Global Average Pooling (GAP) operation~\cite{lin2013network}, which compresses the last convolutional feature map into a compact, fixed-length descriptor:
 \begin{equation}
     \mathbf{f}_k = \mathrm{GAP}\!\left(\mathrm{Backbone}_k(\mathbf{x})\right)
     \label{eq:feature_extraction}
 \end{equation}
-where $\mathbf{x}$ is the input image and $\mathbf{f}_k \in \mathbb{R}^{d_k}$, with $d_{\text{ResNet}} = 2048$, $d_{\text{Efficient}} = 1280$, and $d_{\text{Mobile}} = 1280$. GAP was preferred over flattening because it drastically reduces the number of parameters while preserving high-level semantic activations and improving generalization.
+where $\mathbf{x}$ is the input image and $\mathbf{f}_k \in \mathbb{R}^{d_k}$, with $d_{\text{ResNet}} = 2048$, $d_{\text{Efficient}} = 1280$, and $d_{\text{Mobile}} = 1280$. GAP was preferred over spatial flattening because it substantially reduces the number of parameters and acts as a structural regularizer that improves generalization~\cite{lin2013network}.
 
 \subsubsection{Feature Concatenation and Regularisation}
 
@@ -295,7 +389,7 @@ Once extracted, the three feature vectors are concatenated into a single unified
     \label{eq:concatenation}
 \end{equation}
 
-This feature-level fusion strategy, also known as early fusion, allows the meta-learner to jointly exploit all available backbone representations~\cite{ramachandram2017deep}. To prevent co-adaptation and reduce sensitivity to spurious activations, dropout is applied independently to each backbone output before concatenation, followed by batch normalization of the fused vector.
+This feature-level fusion strategy, also known as early fusion, allows the meta-learner to jointly exploit all available backbone representations~\cite{ramachandram2017deep}. To prevent co-adaptation between backbone features and reduce overfitting, dropout regularization ($p = 0.5$)~\cite{srivastava2014dropout} is applied to each individual feature vector prior to concatenation, followed by batch normalization~\cite{ioffe2015batch} on the full 4,608-dimensional concatenated vector. This normalization step is particularly important because the three backbones may produce features with different scales and distributions, and batch normalization ensures that the meta-learner receives a consistently scaled input regardless of individual backbone behavior.
 
 \subsubsection{\textcolor{red}{Learned Feature Fusion with Attention Mechanism}}
 
@@ -321,21 +415,21 @@ This feature-level fusion strategy, also known as early fusion, allows the meta-
 \subsubsection{Statistical Analysis of Extracted Features}
 \label{subsec:feature_statistics}
 
-Before training the meta-learners, we conduct a systematic statistical characterization of the extracted feature space. This analysis pursues three objectives: understanding the intrinsic geometry of the representation, quantifying redundancy, and assessing discriminative power.
+Before training the meta-learners, we conduct a systematic statistical characterization of the extracted feature space. This analysis pursues three objectives: understanding the intrinsic geometry of the features, quantifying redundancy to guide dimensionality reduction, and verifying the complementarity of the three backbone architectures.
 
-We begin with \textbf{basic distributional statistics} (mean, standard deviation, skewness, and kurtosis) to characterize the overall shape of the feature distribution. We then apply \textbf{Singular Value Decomposition (SVD)}:
+We begin with \textbf{basic distributional statistics} (mean, standard deviation, skewness, and kurtosis) to characterize the overall shape of the feature distribution. We then apply \textbf{Singular Value Decomposition} (SVD), a standard tool for linear dimensionality analysis~\cite{golub1965calculating}:
 \begin{equation}
     \mathbf{X} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^{\top}
     \label{eq:svd}
 \end{equation}
-which decomposes the feature matrix $\mathbf{X}$ into its principal directions of variance. The cumulative explained variance curve reveals how many components are needed to faithfully represent the original 4,608-dimensional feature space.
+which decomposes the feature matrix $\mathbf{X}$ into its principal directions of variance. The cumulative explained variance curve reveals how many components are needed to faithfully represent the feature space, directly informing the choice of PCA dimensionality in the meta-learner pipeline.
 
-We also analyze \textbf{pairwise feature correlations} $R_{ij} = \mathrm{Cov}(\mathbf{f}_i,\mathbf{f}_j)/(\sigma_i\sigma_j)$ to assess inter-backbone redundancy, and estimate the \textbf{Mutual Information (MI)} between each feature and the class label:
+We also analyze \textbf{pairwise feature correlations} $R_{ij} = \mathrm{Cov}(\mathbf{f}_i,\mathbf{f}_j)/(\sigma_i\sigma_j)$ to assess inter-backbone redundancy, and estimate the \textbf{Mutual Information} (MI) between each feature and the class label~\cite{kraskov2004estimating}:
 \begin{equation}
     I(F;\,Y) = \sum_{y \in Y}\sum_{f \in F} p(f,y)\log\!\left(\frac{p(f,y)}{p(f)\,p(y)}\right)
     \label{eq:mi}
 \end{equation}
-MI is a non-parametric measure of statistical dependence that captures both linear and non-linear relationships. We use it to quantify the discriminative power of individual features and to compare the relative informativeness of the three backbones.
+MI is a non-parametric measure of statistical dependence that captures both linear and non-linear relationships. We use it to quantify the discriminative power of individual features and to compare the average informativeness of each backbone's feature set.
 
 \subsection{Meta-Learner Designs}
 \label{subsec:metalearners}
@@ -503,7 +597,21 @@ Table~\ref{tab:backbone_analysis_results} and Figure~\ref{fig:results_backbone} 
     \caption{Backbone analysis of CNN features.}
     \label{fig:results_backbone}
 \end{figure}
+\subsection{\textcolor{red}{t-SNE Visualization of the Fused Feature Space}}
+\label{subsec:tsne_visualization}
 
+\textcolor{red}{To provide a qualitative view of the geometric organization induced by the proposed hybrid representation, we projected the 4,608-dimensional fused CNN feature space onto two dimensions using t-distributed Stochastic Neighbor Embedding (t-SNE). The visualization was performed on a stratified sample of 3,000 images drawn from the PlantVillage test set, ensuring that all 38 classes were represented while keeping the projection computationally tractable.}
+
+\textcolor{red}{As shown in Figure~\ref{fig:tsne_features}, the fused feature space exhibits a clear class-dependent structure, with many categories forming compact and well-separated clusters. This organization suggests that the concatenation of ResNet50, EfficientNetB0, and MobileNetV2 features produces a representation in which disease-specific patterns are strongly preserved and globally discriminative.}
+
+\textcolor{red}{Although a few regions display partial overlap between visually related classes, the overall projection remains highly structured and consistent with the quantitative results obtained from classification accuracy, F1-score, and AUC analysis. In this sense, the t-SNE map provides a complementary qualitative confirmation that the proposed feature-level stacking strategy yields an informative and separable latent space for multi-class crop disease recognition.}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../figures/fig_tsne.png}
+    \caption{\textcolor{red}{t-SNE projection of the 4,608-dimensional fused CNN feature space on a stratified sample of 3,000 PlantVillage test images. Each point represents one image and is coloured according to its ground-truth class. The presence of compact and largely separated clusters indicates that the proposed hybrid feature representation captures strong class-discriminative structure.}}
+    \label{fig:tsne_features}
+\end{figure}
 \subsection{Meta-Learner Performance}
 \label{subsec:results_metalearner}
 
@@ -525,13 +633,100 @@ PCA-Logistic (Harmonised)& \textcolor{red}{$95.27$}          & \textcolor{red}{$
 
 \paragraph{MLP-Full performance.}
 The MLP operating on all 4,608 features achieves the highest test accuracy of \textcolor{red}{\textbf{96.04\%}}, with F1-macro of \textcolor{red}{0.9500} and F1-weighted of \textcolor{red}{0.9604}. This confirms that direct access to the full fused feature space yields the strongest predictive performance.
+\subsubsection*{MLP-Full Training Dynamics}
+\textcolor{red}{
+Figure~\ref{fig:training_curves} reports the evolution of training and validation 
+loss and accuracy over epochs for the MLP-Full meta-learner. Training converged 
+at epoch~22, at which point the best validation loss of 0.2026 and best validation 
+accuracy of 95.28\% were recorded. Early stopping was triggered at epoch~32, 
+confirming that the model did not overfit despite operating on the full 
+4{,}608-dimensional feature space. The close tracking between training and 
+validation curves throughout training indicates that the combination of 
+Dropout ($p = 0.3$), L2 regularisation ($\lambda = 10^{-4}$), and 
+BatchNormalisation effectively controlled overfitting.}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{fig_training_curves.png}
+    \caption{Training dynamics of the MLP-Full meta-learner over 32 epochs 
+    (early stopping triggered at epoch~32, best weights restored from epoch~22). 
+    \textbf{Left:} Training and validation loss. 
+    \textbf{Right:} Training and validation accuracy. 
+    The vertical dashed line marks the optimal epoch at which the best 
+    validation performance was achieved. The close alignment between training 
+    and validation curves confirms the absence of overfitting.}
+    \label{fig:training_curves}
+\end{figure}
 \paragraph{PCA-Logistic performance.}
 The harmonized PCA-Logistic pipeline using exactly 790 components achieves \textcolor{red}{\textbf{95.27\%}} accuracy, demonstrating that a simple linear classifier remains highly competitive once the feature space has been appropriately compressed.
 
 \paragraph{MLP-PCA performance.}
 The MLP operating on 790 PCA components achieves \textcolor{red}{\textbf{95.22\%}} accuracy, confirming that dimensionality reduction preserves most of the useful discriminative signal while enabling a much lighter classifier input.
+\subsubsection{Comparison with Individual Backbone Baselines}
+\label{sec:baseline_comparison}
 
+To empirically validate the benefit of multi-backbone feature fusion,
+Table~\ref{tab:baseline_comparison} compares the three meta-learner variants
+against classifiers trained on individual backbone features alone. Each
+single-backbone baseline uses the same MLP architecture and training protocol
+as MLP-Full, applied exclusively to its respective feature subset.
+\begin{table}[htbp]
+\caption{Baseline comparison between individual backbone classifiers and 
+fused feature meta-learners on the PlantVillage test set (5,431 images, 
+38 classes). Individual backbone results use the same MLP architecture 
+trained on each feature subset independently. Fused model results are 
+those reported in Table~\ref{tab:meta_performance}.}
+\label{tab:baseline_comparison}
+\begin{tabular}{lcccc}
+\toprule
+Model & Features & Test Accuracy (\%) & F1-macro & F1-weighted \\
+\midrule
+ResNet50 alone      & 2,048 & 84.60 & 0.8080 & 0.8445 \\
+EfficientNetB0 alone & 1,280 & 62.39 & 0.5299 & 0.5944 \\
+MobileNetV2 alone   & 1,280 & 94.61 & 0.9323 & 0.9456 \\
+\midrule
+MLP-Full (fusion)   & 4,608 & \textbf{96.04} & \textbf{0.9500} & \textbf{0.9604} \\
+MLP-PCA             &   790 & 95.22 & 0.9408 & 0.9522 \\
+PCA-Logistic        &   790 & 95.27 & 0.9376 & 0.9524 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\textbf{Individual backbone limitations.}
+ResNet50 alone achieves 84.60\% accuracy despite contributing the most
+discriminative features (mean MI = 0.152), confirming that its 2,048-dimensional
+semantic representation alone remains insufficient for robust classification
+across all 38 disease categories. EfficientNetB0 alone reaches only 62.39\%,
+reflecting the difficulty of classifying fine-grained disease patterns from
+multi-scale descriptors without complementary contextual information.
+MobileNetV2 alone achieves the strongest single-backbone result at 94.61\%,
+highlighting its efficiency as a compact feature extractor, yet still falling
+short of the fused framework.
+
+\textbf{Fusion consistently outperforms individual backbones.}
+MLP-Full, operating on the full 4,608-dimensional fused representation,
+achieves \textbf{96.04\%} accuracy, representing absolute gains of
+\textbf{+11.44}, \textbf{+33.65}, and \textbf{+1.43} percentage points
+over ResNet50, EfficientNetB0, and MobileNetV2 alone, respectively.
+This consistent improvement directly demonstrates the complementarity
+quantified in the feature analysis (Section~\ref{sec:feature_stats}):
+the low mean inter-backbone correlation of 0.091 confirms that each
+architecture captures distinct aspects of the input signal, none of
+which alone suffices to match the fused representation.
+
+\textbf{Reduced-space models remain competitive.}
+MLP-PCA (95.22\%) and PCA-Logistic (95.27\%) both surpass the best
+individual backbone (MobileNetV2, 94.61\%) while operating on only
+790 principal components, representing 17.1\% of the original feature
+space. This result confirms that the fusion benefit is preserved even
+after a 5.83$\times$ compression, and validates the practical relevance
+of the reduced-space variants for deployment in resource-constrained
+agricultural environments.
+
+\textbf{Summary.}
+The consistent superiority of all three fused models over every individual
+backbone provides strong empirical evidence that multi-backbone feature-level
+stacking is the principal driver of performance in the proposed framework,
+rather than any single architecture in isolation.
 \paragraph{Statistical significance.}
 McNemar's test was applied to compare classifiers on paired test samples. Table~\ref{tab:results_statistical} presents the results.
 
@@ -594,7 +789,7 @@ MLP-Full requires approximately 750 seconds for training, reflecting the computa
     \label{fig:model_metrics_overview}
 \end{figure}
 
-\subsection{\textcolor{red}{Consolidated Performance Metrics}}
+\subsection{Consolidated Performance Metrics}
 
 \textcolor{red}{To facilitate direct comparison across the three classifiers, Table~\ref{tab:reliable_metrics} summarizes the consolidated performance metrics derived from the classification reports.}
 
@@ -611,7 +806,20 @@ MLP-Full requires approximately 750 seconds for training, reflecting the computa
 \bottomrule
 \end{tabular*}
 \end{table}
+\subsection{\textcolor{red}{ROC and AUC Analysis}}
+\label{subsec:roc_auc}
 
+\textcolor{red}{To further evaluate the discriminative capacity of the proposed MLP-Full classifier beyond accuracy and F1-score, we performed a one-vs-rest (OvR) ROC analysis on the PlantVillage test set. The model achieved a macro-averaged AUC of \textbf{0.9993} and a weighted-averaged AUC of \textbf{0.9994}, indicating near-perfect class separability across the 38 disease categories.}
+
+\textcolor{red}{Figure~\ref{fig:auc_roc} presents the ROC curves for five representative classes together with the macro-average ROC curve. The curves remain consistently close to the upper-left corner, confirming that the fused 4,608-dimensional CNN representation supports highly discriminative decision boundaries across a broad range of disease classes. These results further reinforce the strong predictive performance already observed for MLP-Full in terms of test accuracy (\textbf{96.04\%}), macro-F1, and weighted-F1.}
+
+\textcolor{red}{At the class level, the AUC analysis also reveals only minor heterogeneity. Several classes reached an AUC of \textbf{1.0000}, whereas even the most challenging category remained at \textbf{0.9933}. This narrow spread confirms that the proposed hybrid feature stacking framework achieves not only high global performance, but also highly stable class-wise discrimination across the PlantVillage benchmark.}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{fig_auc_roc.png}
+    \caption{\textcolor{red}{One-vs-rest ROC curves for five representative classes of the MLP-Full model on the PlantVillage test set, together with the macro-average ROC curve. The consistently high true-positive rates and the near-ideal macro-average AUC confirm the excellent discriminative capacity of the fused CNN feature representation.}}
+    \label{fig:auc_roc}
+\end{figure}
 \subsection{Interpretability Analysis}
 \label{subsec:results_interpretability}
 
@@ -708,7 +916,7 @@ Adapted MLP-Full on Multi-Crop & \textcolor{red}{\textbf{90.19}} & \textcolor{re
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{../test_results_multicrop/confusion_matrix.png}
+    \includegraphics[width=\textwidth]{./figs/test_results_multicrop/confusion_matrix.png}
     \caption{\textcolor{red}{Confusion matrix of the adapted MLP-Full model on the Multi-Crop Disease Dataset test set. The matrix confirms strong performance across many banana, groundnut, and radish categories, while also highlighting the remaining confusion concentrated among a few low-support chilli-related classes.}}
     \label{fig:multicrop_confusion}
 \end{figure}
@@ -737,6 +945,23 @@ The three meta-learners exhibit distinct and well-characterized performance prof
 The statistical significance tests provide important context for interpreting these differences. While MLP-Full significantly outperforms both PCA-based models, the absolute performance gaps remain relatively small. This means that, depending on the deployment scenario, reduced-space models may offer a more attractive balance between computational efficiency and accuracy.
 
 \subsection{Real-World Generalization and Domain Adaptation}
+To further probe the generalization capacity of the proposed framework, we extended the evaluation of \textbf{MLP-Full} beyond the controlled PlantVillage benchmark by testing it on the \textit{Multi-Crop Disease Dataset} (Mendeley Data, 2025)~\cite{PremKumar2025_MultiCrop}. This dataset contains more than 23,000 annotated images of healthy and diseased leaves collected under real agricultural field conditions across five crops: banana, chili pepper, radish, peanut, and cauliflower. In contrast to PlantVillage, which was assembled under controlled laboratory conditions, this dataset captures the visual complexity of real farm environments(Table ~\ref{tab:compar_dataset}), including heterogeneous lighting, cluttered backgrounds, and natural noise, making it a meaningful benchmark for assessing robustness to domain shift.
+
+\begin{table}[h]
+\centering
+\caption{Comparative overview of the PlantVillage and Multi-Crop Disease datasets.}
+\label{tab:compar_dataset}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Criterion} & \textbf{PlantVillage} & \textbf{Multi-Crop Dataset} \\ \hline
+Size & $\sim$54,000 images & $\sim$23,000 images \\ \hline
+Crops & 14 species, 38 classes & 5 species, 30 classes \\ \hline
+Conditions & Controlled (neutral background) & Real-world (field variability) \\ \hline
+Annotations & Disease classes & Bounding boxes + classes \\ \hline
+Main advantage & Large volume and diversity & Realism and ecological validity \\ \hline
+Main limitation & Lack of realism & Smaller scale \\ \hline
+\end{tabular}
+\end{table}
 
 \textcolor{red}{The Multi-Crop evaluation constitutes one of the most practically significant findings of this study. A direct transfer from PlantVillage to field images yielded only 55.18\% accuracy, confirming the severity of cross-domain degradation under realistic agricultural conditions. After explicit adaptation to the target domain, however, the same hybrid feature-level stacking framework achieved 90.19\% accuracy, together with 79.28\% macro-F1 and 89.87\% weighted-F1.}
 
